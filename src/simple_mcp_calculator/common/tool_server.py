@@ -15,11 +15,12 @@ import os
 import threading
 import time
 import warnings
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Awaitable, Callable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
 
 import anyio
+import anyio.to_thread
 from mcp import types
 from mcp.server.lowlevel import NotificationOptions, Server
 from mcp.server.stdio import stdio_server
@@ -154,8 +155,11 @@ def format_value(value: ToolValue) -> str:
             return "true" if value else "false"
         case int():
             return str(value)
-        case float():
+        case float() if math.isfinite(value):
             return java_double_str(value)
+        case float():
+            # Jackson writes non-finite doubles as JSON strings: "NaN", "Infinity", "-Infinity".
+            return f'"{java_double_str(value)}"'
         case _:
             return value
 
@@ -187,8 +191,8 @@ class Limits:
         max_concurrent: int,
         clock: Callable[[], float] = time.monotonic,
     ) -> None:
-        if rate <= 0 or burst < 1 or max_concurrent < 1:
-            raise ValueError("rate must be > 0, burst and max_concurrent >= 1")
+        if not math.isfinite(rate) or rate <= 0 or burst < 1 or max_concurrent < 1:
+            raise ValueError("rate must be finite and > 0, burst and max_concurrent >= 1")
         self._rate = rate
         self._burst = float(burst)
         self._max_concurrent = max_concurrent
@@ -272,6 +276,21 @@ def call_tool(
     return _text_result(format_value(value), is_error=False)
 
 
+def call_handler(
+    tools: Mapping[str, Tool], limits: Limits
+) -> Callable[[Any, types.CallToolRequestParams], Awaitable[types.CallToolResult]]:
+    """The ``tools/call`` handler. Each call runs in a worker thread, so a slow tool never
+    blocks pings, cancellations or other requests, and the concurrency cap in ``limits`` bounds
+    how many run at once (calls beyond it are rejected, not queued)."""
+
+    async def on_call_tool(_ctx: Any, params: types.CallToolRequestParams) -> types.CallToolResult:
+        return await anyio.to_thread.run_sync(
+            call_tool, tools, limits, params.name, params.arguments
+        )
+
+    return on_call_tool
+
+
 def build_server(spec: ServerSpec, limits: Limits) -> Server[Any]:
     """A low-level MCP server for ``spec``, advertising exactly what the Java server does."""
     tools = tools_by_name(spec.tools)
@@ -280,8 +299,7 @@ def build_server(spec: ServerSpec, limits: Limits) -> Server[Any]:
     async def on_list_tools(_ctx: Any, _params: Any) -> types.ListToolsResult:
         return listing
 
-    async def on_call_tool(_ctx: Any, params: types.CallToolRequestParams) -> types.CallToolResult:
-        return call_tool(tools, limits, params.name, params.arguments)
+    on_call_tool = call_handler(tools, limits)
 
     async def on_set_logging_level(_ctx: Any, _params: Any) -> types.EmptyResult:
         return types.EmptyResult()

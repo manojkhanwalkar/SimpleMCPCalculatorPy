@@ -4,28 +4,41 @@ Stdout carries the MCP protocol, so a server logs to a file: ``~/.calculator-mcp
 owner-only (directory 0700, file 0600) so other local users can neither read it nor pre-create
 it. If the home directory is not writable (e.g. a container user with HOME=/), a fresh private
 temp directory is used instead, so startup never fails over logging. As in the Java servers,
-``--logging.file.name=<path>`` (or the LOGGING_FILE_NAME environment variable) wins.
+``--logging.file.name=<path>`` wins, and the file rolls over at 10 MB keeping 7 old files
+(Spring Boot's defaults), so it never grows without bound.
 """
 
 import logging
+import logging.handlers
 import os
 import stat
+import sys
 import tempfile
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from pathlib import Path
 
 LOG_DIR_NAME = ".calculator-mcp"
 OPTION = "--logging.file.name="
-ENV = "LOGGING_FILE_NAME"
+MAX_BYTES = 10 * 1024 * 1024
+BACKUP_COUNT = 7
 _FORMAT = "%(asctime)s %(levelname)-5s %(process)d --- [%(threadName)s] %(name)s : %(message)s"
 
 
-def explicit_path(argv: Sequence[str], env: Mapping[str, str] = os.environ) -> Path | None:
-    """The log file named by ``--logging.file.name=`` (last one wins) or LOGGING_FILE_NAME."""
+def explicit_path(argv: Sequence[str]) -> Path | None:
+    """The log file named by ``--logging.file.name=`` (the last one wins).
+
+    Like the Java servers, an environment variable does not override the private default.
+    """
     named = [a.removeprefix(OPTION) for a in argv if a.startswith(OPTION)]
-    if named:
-        return Path(named[-1])
-    return Path(env[ENV]) if env.get(ENV) else None
+    return Path(named[-1]) if named and named[-1] else None
+
+
+class PrivateRotatingFileHandler(logging.handlers.RotatingFileHandler):
+    """A rotating log whose every file, including those it opens after a rollover, is 0600."""
+
+    def _open(self):  # type: ignore[no-untyped-def]  # signature of the stdlib private hook
+        fd = os.open(self.baseFilename, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        return open(fd, self.mode, encoding=self.encoding, errors=self.errors)
 
 
 def _create_private(directory: Path, file_name: str) -> Path:
@@ -59,27 +72,36 @@ def private_log_file(file_name: str, home: Path | None = None) -> Path | None:
         return None
 
 
-def configure_logging(
-    file_name: str,
-    argv: Sequence[str],
-    env: Mapping[str, str] = os.environ,
-    home: Path | None = None,
-) -> Path | None:
+def _file_handler(path: Path) -> logging.Handler:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handler = PrivateRotatingFileHandler(
+        path, maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT, encoding="utf-8"
+    )
+    handler.setFormatter(logging.Formatter(_FORMAT))
+    return handler
+
+
+def configure_logging(file_name: str, argv: Sequence[str], home: Path | None = None) -> Path | None:
     """Send the root logger to the server's log file (never to stdout) and return its path.
 
-    With no usable file, logging is switched off rather than risk writing to stdout.
+    An explicit file that can't be opened falls back to the private default, as Logback keeps
+    the Java server running; with no usable file at all, logging is switched off.
     """
-    path = explicit_path(argv, env) or private_log_file(file_name, home)
     root = logging.getLogger()
-    for handler in list(root.handlers):
-        root.removeHandler(handler)
-        handler.close()
-    if path is None:
-        root.addHandler(logging.NullHandler())
-        return None
-    path.parent.mkdir(parents=True, exist_ok=True)
-    handler = logging.FileHandler(path, encoding="utf-8")
-    handler.setFormatter(logging.Formatter(_FORMAT))
-    root.addHandler(handler)
+    for old in list(root.handlers):
+        root.removeHandler(old)
+        old.close()
     root.setLevel(logging.INFO)
-    return path
+    explicit = explicit_path(argv)
+    candidates = [explicit] if explicit else []
+    for path in [*candidates, private_log_file(file_name, home)]:
+        if path is None:
+            continue
+        try:
+            root.addHandler(_file_handler(path))
+        except OSError as e:
+            print(f"Cannot log to {path}: {e}", file=sys.stderr)
+            continue
+        return path
+    root.addHandler(logging.NullHandler())
+    return None

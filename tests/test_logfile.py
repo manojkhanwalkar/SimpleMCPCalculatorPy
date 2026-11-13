@@ -86,19 +86,71 @@ def test_returns_none_when_nothing_is_writable(
 
 def test_explicit_option_wins_last_one_counts() -> None:
     argv = ["--logging.file.name=/a.log", "add", "--logging.file.name=/b.log"]
-    assert logfile.explicit_path(argv, env={}) == Path("/b.log")
+    assert logfile.explicit_path(argv) == Path("/b.log")
 
 
-def test_environment_variable_is_used_when_no_option() -> None:
-    assert logfile.explicit_path([], env={"LOGGING_FILE_NAME": "/c.log"}) == Path("/c.log")
-    assert logfile.explicit_path([], env={}) is None
+def test_no_option_or_an_empty_one_means_the_default() -> None:
+    assert logfile.explicit_path([]) is None
+    assert logfile.explicit_path(["--logging.file.name="]) is None
+
+
+def test_environment_variable_does_not_override_like_java(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The Java servers set the logging.file.name system property, which outranks
+    LOGGING_FILE_NAME; the environment variable is ignored."""
+    monkeypatch.setenv("LOGGING_FILE_NAME", str(tmp_path / "env.log"))
+    path = logfile.configure_logging("server.log", [], home=tmp_path)
+    assert path == tmp_path / ".calculator-mcp" / "server.log"
+    assert not (tmp_path / "env.log").exists()
+
+
+def test_unusable_explicit_file_falls_back_to_the_default(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Java (Logback) reports the error and keeps serving; so does the port."""
+    a_directory = tmp_path / "is-a-directory"
+    a_directory.mkdir()
+    path = logfile.configure_logging(
+        "server.log", [f"--logging.file.name={a_directory}"], home=tmp_path
+    )
+    assert path == tmp_path / ".calculator-mcp" / "server.log"
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert f"Cannot log to {a_directory}" in captured.err
+
+
+def test_log_rolls_over_and_every_file_stays_private(tmp_path: Path) -> None:
+    target = tmp_path / "rolling.log"
+    handler = logfile.PrivateRotatingFileHandler(target, maxBytes=200, backupCount=2)
+    log = logging.getLogger("rolling-test")
+    log.addHandler(handler)
+    log.propagate = False
+    try:
+        for i in range(50):
+            log.warning("line %d with some padding to fill the file", i)
+    finally:
+        log.removeHandler(handler)
+        handler.close()
+    files = sorted(tmp_path.glob("rolling.log*"))
+    assert [f.name for f in files] == ["rolling.log", "rolling.log.1", "rolling.log.2"]
+    assert all(_mode(f) == 0o600 for f in files)
+    assert all(f.stat().st_size <= 200 for f in files)
+
+
+def test_default_handler_is_bounded(tmp_path: Path) -> None:
+    logfile.configure_logging("server.log", [], home=tmp_path)
+    (handler,) = logging.getLogger().handlers
+    assert isinstance(handler, logfile.PrivateRotatingFileHandler)
+    assert handler.maxBytes == 10 * 1024 * 1024
+    assert handler.backupCount == 7
 
 
 def test_configure_logging_writes_to_the_file_not_stdout(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     target = tmp_path / "logs" / "explicit.log"
-    path = logfile.configure_logging("server.log", [f"--logging.file.name={target}"], env={})
+    path = logfile.configure_logging("server.log", [f"--logging.file.name={target}"])
     assert path == target
     logging.getLogger("demo").info("hello file")
     for h in logging.getLogger().handlers:
@@ -111,12 +163,12 @@ def test_configure_logging_goes_silent_without_a_file(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(logfile, "private_log_file", lambda *_a, **_k: None)
-    assert logfile.configure_logging("server.log", [], env={}, home=tmp_path) is None
+    assert logfile.configure_logging("server.log", [], home=tmp_path) is None
     assert all(isinstance(h, logging.NullHandler) for h in logging.getLogger().handlers)
 
 
 def test_default_location_is_the_home_directory(tmp_path: Path) -> None:
-    path = logfile.configure_logging("server.log", [], env={}, home=tmp_path)
+    path = logfile.configure_logging("server.log", [], home=tmp_path)
     assert path == tmp_path / ".calculator-mcp" / "server.log"
     assert os.access(path, os.W_OK)
 

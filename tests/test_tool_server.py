@@ -5,10 +5,14 @@ Expected values are copied from responses captured from the Java servers (commit
 
 import math
 import sys
+import threading
 from pathlib import Path
 from typing import Any
 
+import anyio
+import anyio.to_thread
 import pytest
+from mcp import types
 from mcp.shared.exceptions import MCPError
 
 from simple_mcp_calculator.common import tool_server as ts
@@ -170,7 +174,18 @@ def test_exception_without_message_uses_its_type() -> None:
 
 @pytest.mark.parametrize(
     ("value", "text"),
-    [(True, "true"), (False, "false"), (120, "120"), (2.0, "2.0"), ("odd", "odd")],
+    [
+        (True, "true"),
+        (False, "false"),
+        (120, "120"),
+        (2.0, "2.0"),
+        (-0.0, "-0.0"),
+        ("odd", "odd"),
+        # Jackson writes non-finite doubles as JSON strings (captured from the Java jar).
+        (math.nan, '"NaN"'),
+        (math.inf, '"Infinity"'),
+        (-math.inf, '"-Infinity"'),
+    ],
 )
 def test_format_value(value: ts.ToolValue, text: str) -> None:
     assert ts.format_value(value) == text
@@ -247,7 +262,10 @@ def test_limits_from_environment() -> None:
     assert ts.Limits.from_env({}).try_acquire() is None
 
 
-@pytest.mark.parametrize(("rate", "burst", "cap"), [(0, 1, 1), (1, 0, 1), (1, 1, 0)])
+@pytest.mark.parametrize(
+    ("rate", "burst", "cap"),
+    [(0, 1, 1), (-1, 1, 1), (math.nan, 1, 1), (math.inf, 1, 1), (1, 0, 1), (1, 1, 0)],
+)
 def test_limits_reject_nonsense(rate: float, burst: int, cap: int) -> None:
     with pytest.raises(ValueError, match="rate must be"):
         ts.Limits(rate, burst, cap)
@@ -279,7 +297,8 @@ def test_end_to_end_over_stdio(tmp_path: Path) -> None:
             "tools/call", '{"name":"divide","arguments":{"a":1e400,"b":2}}'
         )
         assert infinite["result"] == {
-            "content": [{"text": "Infinity", "type": "text"}],
+            # Jackson quotes a non-finite double (captured from the Java jar).
+            "content": [{"text": '"Infinity"', "type": "text"}],
             "isError": False,
         }
         assert session.call_tool("divide", {"a": 1, "b": 0})["result"]["content"][0]["text"] == (
@@ -292,3 +311,32 @@ def test_end_to_end_over_stdio(tmp_path: Path) -> None:
         }
         assert session.close() == ""
     assert "starting on stdio" in log.read_text()
+
+
+async def test_calls_run_in_worker_threads_and_the_cap_applies() -> None:
+    """A slow tool runs off the event loop; while it holds the only slot, another call is
+    rejected instead of queued, and the loop stays free."""
+    started, release = threading.Event(), threading.Event()
+
+    def slow(a: float) -> float:
+        started.set()
+        release.wait(10)
+        return a
+
+    tools = {"slow": ts.Tool("slow", "d", (ts.Param("a", "x"),), slow)}
+    limits = ts.Limits(rate=1000, burst=1000, max_concurrent=1)
+    handler = ts.call_handler(tools, limits)
+    params = types.CallToolRequestParams(name="slow", arguments={"a": 1})
+    results: list[types.CallToolResult] = []
+
+    async def first() -> None:
+        results.append(await handler(None, params))
+
+    async with anyio.create_task_group() as group:
+        group.start_soon(first)
+        await anyio.to_thread.run_sync(started.wait, 10)
+        second = await handler(None, params)
+        release.set()
+    assert second.is_error is True
+    assert second.content[0].text.startswith("Too many requests")  # type: ignore[union-attr]
+    assert results[0].content[0].text == "1.0"  # type: ignore[union-attr]
