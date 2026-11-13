@@ -340,3 +340,33 @@ async def test_calls_run_in_worker_threads_and_the_cap_applies() -> None:
     assert second.is_error is True
     assert second.content[0].text.startswith("Too many requests")  # type: ignore[union-attr]
     assert results[0].content[0].text == "1.0"  # type: ignore[union-attr]
+
+
+def test_malformed_limit_settings_name_the_variable() -> None:
+    with pytest.raises(ValueError, match=r"CALCULATOR_MCP_RATE must be a number, got 'fast'"):
+        ts.Limits.from_env({"CALCULATOR_MCP_RATE": "fast"})
+    with pytest.raises(ValueError, match=r"CALCULATOR_MCP_BURST must be a number, got '1.5'"):
+        ts.Limits.from_env({"CALCULATOR_MCP_BURST": "1.5"})
+    with pytest.raises(ValueError, match=r"^Invalid request limits: rate must be finite"):
+        ts.Limits.from_env({"CALCULATOR_MCP_RATE": "nan"})
+
+
+def test_ctrl_c_stops_the_server_quietly(monkeypatch: pytest.MonkeyPatch) -> None:
+    def interrupted(*_: object) -> None:
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(anyio, "run", interrupted)
+    ts.serve_stdio(SPEC, _no_limits())  # returns instead of raising
+
+
+def test_run_server_names_the_log_after_the_server(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    calls: list[tuple[str, list[str]]] = []
+    monkeypatch.setattr(
+        ts, "configure_logging", lambda name, argv: calls.append((name, list(argv)))
+    )
+    monkeypatch.setattr(ts, "serve_stdio", lambda spec: calls.append((spec.name, [])))
+    monkeypatch.setattr(sys, "argv", ["prog", "--x=1"])
+    ts.run_server(SPEC)
+    assert calls == [("calculator-mcp-server.log", ["--x=1"]), ("calculator-mcp-server", [])]
