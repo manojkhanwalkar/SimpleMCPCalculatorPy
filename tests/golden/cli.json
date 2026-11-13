@@ -1,0 +1,1055 @@
+[
+ {
+  "client": "calculator-mcp-client",
+  "args": [],
+  "stdout": "Tools offered by the server: add, divide, exponent, factorial, isPrime, multiply, parity, remainder, subtract\nadd       17, 5 = 22.0\nsubtract  17, 5 = 12.0\nmultiply  17, 5 = 85.0\ndivide    17, 5 = 3.4\nremainder 17, 5 = 2.0\nexponent  17, 5 = 1419857.0\ndivide    1, 0  = Error: Division by zero\nfactorial 17    = 355687428096000\nisPrime   17    = true\nparity    17    = odd\nfactorial 2.5   = Error: Not a whole number: 2.5\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "7",
+   "5"
+  ],
+  "stdout": "12.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "subtract",
+   "7",
+   "5"
+  ],
+  "stdout": "2.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "multiply",
+   "6",
+   "7"
+  ],
+  "stdout": "42.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "divide",
+   "10",
+   "4"
+  ],
+  "stdout": "2.5\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "remainder",
+   "10",
+   "3"
+  ],
+  "stdout": "1.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "exponent",
+   "2",
+   "10"
+  ],
+  "stdout": "1024.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "divide",
+   "1",
+   "0"
+  ],
+  "stdout": "Error: Division by zero\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "factorial",
+   "5"
+  ],
+  "stdout": "120\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "isPrime",
+   "97"
+  ],
+  "stdout": "true\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "42"
+  ],
+  "stdout": "even\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "7.5"
+  ],
+  "stdout": "Error: Not a whole number: 7.5\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "factorial",
+   "2.5"
+  ],
+  "stdout": "Error: Not a whole number: 2.5\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "exponent",
+   "10",
+   "400"
+  ],
+  "stdout": "Error: Result is too large\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "remainder",
+   "1e400",
+   "2"
+  ],
+  "stdout": "Error: Tool (remainder) input validation failed: Validation failed: JSON schema validation errors: [/a: string found, number expected]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "cube_root",
+   "8",
+   "1"
+  ],
+  "stdout": "Error: Unknown tool: invalid_tool_name\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "cube_root",
+   "8"
+  ],
+  "stdout": "Error: Unknown tool: invalid_tool_name\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "1"
+  ],
+  "stdout": "Error: Tool (add) input validation failed: Validation failed: JSON schema validation errors: [: required property 'a' not found, : required property 'b' not found]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-mcp-client.jar [<operation> <a> <b> | <operation> <n>]\nOperations: add, divide, exponent, factorial, isPrime, multiply, parity, remainder, subtract\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "1",
+   "2",
+   "3"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-mcp-client.jar [<operation> <a> <b> | <operation> <n>]\nOperations: add, divide, exponent, factorial, isPrime, multiply, parity, remainder, subtract\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "1",
+   "abc"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-mcp-client.jar [<operation> <a> <b> | <operation> <n>]\nOperations: add, divide, exponent, factorial, isPrime, multiply, parity, remainder, subtract\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "abc"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-mcp-client.jar [<operation> <a> <b> | <operation> <n>]\nOperations: add, divide, exponent, factorial, isPrime, multiply, parity, remainder, subtract\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "1d",
+   "1"
+  ],
+  "stdout": "2.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "2.5f",
+   "1"
+  ],
+  "stdout": "3.5\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "0x1p3",
+   "1"
+  ],
+  "stdout": "9.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "1_000",
+   "1"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-mcp-client.jar [<operation> <a> <b> | <operation> <n>]\nOperations: add, divide, exponent, factorial, isPrime, multiply, parity, remainder, subtract\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   " 7",
+   "1"
+  ],
+  "stdout": "8.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "+5",
+   "1"
+  ],
+  "stdout": "6.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   ".5",
+   "1"
+  ],
+  "stdout": "1.5\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "5.",
+   "1"
+  ],
+  "stdout": "6.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "1e400",
+   "1"
+  ],
+  "stdout": "Error: Tool (add) input validation failed: Validation failed: JSON schema validation errors: [/a: string found, number expected]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "NaN",
+   "1"
+  ],
+  "stdout": "Error: Tool (add) input validation failed: Validation failed: JSON schema validation errors: [/a: string found, number expected]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "Infinity",
+   "1"
+  ],
+  "stdout": "Error: Tool (add) input validation failed: Validation failed: JSON schema validation errors: [/a: string found, number expected]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "add",
+   "-0",
+   "1"
+  ],
+  "stdout": "1.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "1d"
+  ],
+  "stdout": "odd\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "2.5f"
+  ],
+  "stdout": "Error: Not a whole number: 2.5\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "0x1p3"
+  ],
+  "stdout": "even\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "1_000"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-mcp-client.jar [<operation> <a> <b> | <operation> <n>]\nOperations: add, divide, exponent, factorial, isPrime, multiply, parity, remainder, subtract\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   " 7"
+  ],
+  "stdout": "odd\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "+5"
+  ],
+  "stdout": "odd\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   ".5"
+  ],
+  "stdout": "Error: Not a whole number: 0.5\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "5."
+  ],
+  "stdout": "odd\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "1e400"
+  ],
+  "stdout": "Error: Tool (parity) input validation failed: Validation failed: JSON schema validation errors: [/n: string found, number expected]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "NaN"
+  ],
+  "stdout": "Error: Tool (parity) input validation failed: Validation failed: JSON schema validation errors: [/n: string found, number expected]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "Infinity"
+  ],
+  "stdout": "Error: Tool (parity) input validation failed: Validation failed: JSON schema validation errors: [/n: string found, number expected]\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-mcp-client",
+  "args": [
+   "parity",
+   "-0"
+  ],
+  "stdout": "even\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [],
+  "stdout": "Tools offered by the server: ln, log, log10, sqrt\nsqrt  144     = 12.0\nsqrt  2       = 1.4142135623730951\nlog10 1000    = 3.0\nlog   1024, 2 = 10.0\nln    10      = 2.302585092994046\nsqrt  -4      = Error: Square root of a negative number\nln    0       = Error: Logarithm is only defined for x > 0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "144"
+  ],
+  "stdout": "12.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "2"
+  ],
+  "stdout": "1.4142135623730951\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "ln",
+   "10"
+  ],
+  "stdout": "2.302585092994046\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "log10",
+   "1000"
+  ],
+  "stdout": "3.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "log",
+   "1024",
+   "2"
+  ],
+  "stdout": "10.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "log",
+   "1000",
+   "10"
+  ],
+  "stdout": "3.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "-4"
+  ],
+  "stdout": "Error: Square root of a negative number\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "ln",
+   "0"
+  ],
+  "stdout": "Error: Logarithm is only defined for x > 0\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "log",
+   "8",
+   "1"
+  ],
+  "stdout": "Error: Logarithm base must be > 0 and not 1\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "log",
+   "8"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "4",
+   "2"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "cube_root",
+   "8"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "abc"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "1d"
+  ],
+  "stdout": "1.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "2.5f"
+  ],
+  "stdout": "1.5811388300841898\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "0x1p3"
+  ],
+  "stdout": "2.8284271247461903\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "1_000"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   " 7"
+  ],
+  "stdout": "2.6457513110645907\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "+5"
+  ],
+  "stdout": "2.23606797749979\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   ".5"
+  ],
+  "stdout": "0.7071067811865476\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "5."
+  ],
+  "stdout": "2.23606797749979\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "1e400"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "NaN"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "Infinity"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar scientific-calculator-mcp-client.jar [<operation> <x> | log <x> <base>]\nOperations: ln, log, log10, sqrt\n",
+  "exit": 1
+ },
+ {
+  "client": "scientific-calculator-mcp-client",
+  "args": [
+   "sqrt",
+   "-0"
+  ],
+  "stdout": "0.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [],
+  "stdout": "Operations:\n  add        a, b         -> calculator-mcp-server\n  divide     a, b         -> calculator-mcp-server\n  exponent   a, b         -> calculator-mcp-server\n  factorial  n            -> calculator-mcp-server\n  isPrime    n            -> calculator-mcp-server\n  ln         x            -> scientific-calculator-mcp-server\n  log        x, base      -> scientific-calculator-mcp-server\n  log10      x            -> scientific-calculator-mcp-server\n  multiply   a, b         -> calculator-mcp-server\n  parity     n            -> calculator-mcp-server\n  remainder  a, b         -> calculator-mcp-server\n  sqrt       x            -> scientific-calculator-mcp-server\n  subtract   a, b         -> calculator-mcp-server\n\nadd        [17.0, 5.0]   = 22.0\nfactorial  [5.0]         = 120\nparity     [17.0]        = odd\nsqrt       [144.0]       = 12.0\nlog        [1024.0, 2.0] = 10.0\ndivide     [1.0, 0.0]    = Error: Division by zero\ncube_root  [8.0]         = Error: Unknown operation: cube_root\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "add",
+   "7",
+   "5"
+  ],
+  "stdout": "12.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "exponent",
+   "2",
+   "10"
+  ],
+  "stdout": "1024.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "factorial",
+   "5"
+  ],
+  "stdout": "120\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "isPrime",
+   "97"
+  ],
+  "stdout": "true\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "parity",
+   "42"
+  ],
+  "stdout": "even\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "144"
+  ],
+  "stdout": "12.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "ln",
+   "10"
+  ],
+  "stdout": "2.302585092994046\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "log10",
+   "1000"
+  ],
+  "stdout": "3.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "log",
+   "1024",
+   "2"
+  ],
+  "stdout": "10.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "divide",
+   "1",
+   "0"
+  ],
+  "stdout": "Error: Division by zero\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "-4"
+  ],
+  "stdout": "Error: Square root of a negative number\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "factorial",
+   "2.5"
+  ],
+  "stdout": "Error: Not a whole number: 2.5\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "log",
+   "8"
+  ],
+  "stdout": "Error: log takes 2 operand(s): x, base\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "4",
+   "2"
+  ],
+  "stdout": "Error: sqrt takes 1 operand(s): x\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "cube_root",
+   "8"
+  ],
+  "stdout": "Error: Unknown operation: cube_root\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "add"
+  ],
+  "stdout": "Error: add takes 2 operand(s): a, b\n",
+  "stderr": "",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "add",
+   "1",
+   "abc"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-router-client.jar [<operation> <operand>...]\nOperations:\n  add        a, b         -> calculator-mcp-server\n  divide     a, b         -> calculator-mcp-server\n  exponent   a, b         -> calculator-mcp-server\n  factorial  n            -> calculator-mcp-server\n  isPrime    n            -> calculator-mcp-server\n  ln         x            -> scientific-calculator-mcp-server\n  log        x, base      -> scientific-calculator-mcp-server\n  log10      x            -> scientific-calculator-mcp-server\n  multiply   a, b         -> calculator-mcp-server\n  parity     n            -> calculator-mcp-server\n  remainder  a, b         -> calculator-mcp-server\n  sqrt       x            -> scientific-calculator-mcp-server\n  subtract   a, b         -> calculator-mcp-server\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "1d"
+  ],
+  "stdout": "1.0\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "2.5f"
+  ],
+  "stdout": "1.5811388300841898\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "0x1p3"
+  ],
+  "stdout": "2.8284271247461903\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "1_000"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-router-client.jar [<operation> <operand>...]\nOperations:\n  add        a, b         -> calculator-mcp-server\n  divide     a, b         -> calculator-mcp-server\n  exponent   a, b         -> calculator-mcp-server\n  factorial  n            -> calculator-mcp-server\n  isPrime    n            -> calculator-mcp-server\n  ln         x            -> scientific-calculator-mcp-server\n  log        x, base      -> scientific-calculator-mcp-server\n  log10      x            -> scientific-calculator-mcp-server\n  multiply   a, b         -> calculator-mcp-server\n  parity     n            -> calculator-mcp-server\n  remainder  a, b         -> calculator-mcp-server\n  sqrt       x            -> scientific-calculator-mcp-server\n  subtract   a, b         -> calculator-mcp-server\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   " 7"
+  ],
+  "stdout": "2.6457513110645907\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "+5"
+  ],
+  "stdout": "2.23606797749979\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   ".5"
+  ],
+  "stdout": "0.7071067811865476\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "5."
+  ],
+  "stdout": "2.23606797749979\n",
+  "stderr": "",
+  "exit": 0
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "1e400"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-router-client.jar [<operation> <operand>...]\nOperations:\n  add        a, b         -> calculator-mcp-server\n  divide     a, b         -> calculator-mcp-server\n  exponent   a, b         -> calculator-mcp-server\n  factorial  n            -> calculator-mcp-server\n  isPrime    n            -> calculator-mcp-server\n  ln         x            -> scientific-calculator-mcp-server\n  log        x, base      -> scientific-calculator-mcp-server\n  log10      x            -> scientific-calculator-mcp-server\n  multiply   a, b         -> calculator-mcp-server\n  parity     n            -> calculator-mcp-server\n  remainder  a, b         -> calculator-mcp-server\n  sqrt       x            -> scientific-calculator-mcp-server\n  subtract   a, b         -> calculator-mcp-server\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "NaN"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-router-client.jar [<operation> <operand>...]\nOperations:\n  add        a, b         -> calculator-mcp-server\n  divide     a, b         -> calculator-mcp-server\n  exponent   a, b         -> calculator-mcp-server\n  factorial  n            -> calculator-mcp-server\n  isPrime    n            -> calculator-mcp-server\n  ln         x            -> scientific-calculator-mcp-server\n  log        x, base      -> scientific-calculator-mcp-server\n  log10      x            -> scientific-calculator-mcp-server\n  multiply   a, b         -> calculator-mcp-server\n  parity     n            -> calculator-mcp-server\n  remainder  a, b         -> calculator-mcp-server\n  sqrt       x            -> scientific-calculator-mcp-server\n  subtract   a, b         -> calculator-mcp-server\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "Infinity"
+  ],
+  "stdout": "",
+  "stderr": "Usage: java -jar calculator-router-client.jar [<operation> <operand>...]\nOperations:\n  add        a, b         -> calculator-mcp-server\n  divide     a, b         -> calculator-mcp-server\n  exponent   a, b         -> calculator-mcp-server\n  factorial  n            -> calculator-mcp-server\n  isPrime    n            -> calculator-mcp-server\n  ln         x            -> scientific-calculator-mcp-server\n  log        x, base      -> scientific-calculator-mcp-server\n  log10      x            -> scientific-calculator-mcp-server\n  multiply   a, b         -> calculator-mcp-server\n  parity     n            -> calculator-mcp-server\n  remainder  a, b         -> calculator-mcp-server\n  sqrt       x            -> scientific-calculator-mcp-server\n  subtract   a, b         -> calculator-mcp-server\n",
+  "exit": 1
+ },
+ {
+  "client": "calculator-router-client",
+  "args": [
+   "sqrt",
+   "-0"
+  ],
+  "stdout": "0.0\n",
+  "stderr": "",
+  "exit": 0
+ }
+]
