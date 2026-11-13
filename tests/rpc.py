@@ -61,10 +61,11 @@ class RawSession:
         return self.request("tools/call", {"name": name, "arguments": arguments})
 
     def close(self) -> str:
-        """Close stdin, wait for exit and return stderr."""
+        """Close stdin, wait for a clean exit (status 0) and return stderr."""
         assert self._proc.stdin is not None
         self._proc.stdin.close()
         _, stderr = self._proc.communicate(timeout=30)
+        assert self._proc.returncode == 0, f"server exited {self._proc.returncode}: {stderr}"
         return stderr
 
     def __enter__(self) -> Self:

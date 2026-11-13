@@ -12,6 +12,7 @@ It also adds what the Java servers lack: a token bucket and a concurrency cap on
 import logging
 import math
 import os
+import sys
 import threading
 import time
 import warnings
@@ -27,6 +28,7 @@ from mcp.server.stdio import stdio_server
 from mcp.shared.exceptions import MCPDeprecationWarning, MCPError
 
 from simple_mcp_calculator.common.javafmt import java_double_str
+from simple_mcp_calculator.common.logfile import configure_logging
 
 log = logging.getLogger(__name__)
 
@@ -205,12 +207,25 @@ class Limits:
     @classmethod
     def from_env(cls, env: Mapping[str, str] = os.environ) -> Limits:
         """Defaults: 200 calls/s, burst 400, 8 in flight; override with CALCULATOR_MCP_RATE,
-        CALCULATOR_MCP_BURST and CALCULATOR_MCP_MAX_CONCURRENT."""
-        return cls(
-            rate=float(env.get("CALCULATOR_MCP_RATE", "200")),
-            burst=int(env.get("CALCULATOR_MCP_BURST", "400")),
-            max_concurrent=int(env.get("CALCULATOR_MCP_MAX_CONCURRENT", "8")),
-        )
+        CALCULATOR_MCP_BURST and CALCULATOR_MCP_MAX_CONCURRENT. A malformed value is a
+        ``ValueError`` that names the setting."""
+
+        def setting[T](name: str, default: str, parse: Callable[[str], T]) -> T:
+            text = env.get(name, default)
+            try:
+                return parse(text)
+            except ValueError:
+                kind = "a whole number" if parse is int else "a number"
+                raise ValueError(f"{name} must be {kind}, got {text!r}") from None
+
+        try:
+            return cls(
+                rate=setting("CALCULATOR_MCP_RATE", "200", float),
+                burst=setting("CALCULATOR_MCP_BURST", "400", int),
+                max_concurrent=setting("CALCULATOR_MCP_MAX_CONCURRENT", "8", int),
+            )
+        except ValueError as e:
+            raise ValueError(f"Invalid request limits: {e}") from None
 
     def try_acquire(self) -> float | None:
         """Take a slot. ``None`` when granted (call ``release`` afterwards); otherwise the seconds
@@ -330,8 +345,22 @@ def serve_stdio(spec: ServerSpec, limits: Limits | None = None) -> None:
             await server.run(read, write, options)
 
     log.info("%s %s starting on stdio", spec.name, spec.version)
-    anyio.run(main)
+    try:
+        anyio.run(main)
+    except KeyboardInterrupt:
+        # Ctrl+C on a server started by hand: no traceback, and the conventional exit status
+        # 130 (as the JVM gives). The SDK's stdin reader only notices once stdin has a line or
+        # closes, so the server stops then.
+        log.info("%s interrupted", spec.name)
+        raise SystemExit(130) from None
     log.info("%s stopped", spec.name)
+
+
+def run_server(spec: ServerSpec, argv: Sequence[str] | None = None) -> None:
+    """A server's entry point: log to ``~/.calculator-mcp/<server name>.log`` (or
+    ``--logging.file.name=``), then serve ``spec`` on stdio."""
+    configure_logging(f"{spec.name}.log", sys.argv[1:] if argv is None else argv)
+    serve_stdio(spec)
 
 
 def tools_by_name(tools: Sequence[Tool]) -> dict[str, Tool]:

@@ -6,13 +6,12 @@ differently from the C library on some non-round inputs (2,000,000 doubles measu
 up to 2 ulps, ``ln`` up to 1). ``sqrt`` is exact.
 """
 
-import sys
 from collections.abc import Iterator
 
 import pytest
 
 from simple_mcp_calculator.scientific_server.tools import SPEC
-from tests.golden_support import Golden
+from tests.golden_support import Golden, server_session
 from tests.rpc import RawSession
 
 GOLDEN = Golden(SPEC, ulp_limits={"ln": 1, "log10": 2, "log": 2})
@@ -35,11 +34,10 @@ def test_only_the_logarithms_need_the_tolerance() -> None:
 
 @pytest.fixture(scope="module")
 def server(tmp_path_factory: pytest.TempPathFactory) -> Iterator[RawSession]:
-    log = tmp_path_factory.mktemp("logs") / "server.log"
-    command = [sys.executable, "-m", "simple_mcp_calculator.scientific_server"]
-    with RawSession([*command, f"--logging.file.name={log}"]) as session:
+    with server_session(
+        "simple_mcp_calculator.scientific_server", tmp_path_factory.mktemp("logs")
+    ) as session:
         yield session
-        assert session.close() == ""
 
 
 def test_initialize_matches_java(server: RawSession) -> None:
