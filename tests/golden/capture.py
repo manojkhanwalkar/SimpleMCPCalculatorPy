@@ -13,6 +13,7 @@ JSON-RPC ``error``.
 import itertools
 import json
 import os
+import random
 import selectors
 import subprocess
 import sys
@@ -147,6 +148,20 @@ BAD_PAIRS = [
 ]
 
 
+# Non-round inputs: HotSpot's Math.log/log10 intrinsics and glibc round differently on some of
+# them, which round numbers never show. repr() is the shortest text that parses back to the same
+# double in both languages.
+_random = random.Random(20261113)  # noqa: S311 - reproducible test inputs, not secrets
+NON_ROUND = (
+    [repr(_random.uniform(0, 4)) for _ in range(150)]
+    + [repr(1 + _random.uniform(-1e-3, 1e-3)) for _ in range(100)]
+    + [repr(10 ** _random.uniform(-300, 300)) for _ in range(50)]
+)
+NON_ROUND_PAIRS = [
+    f'{{"x":{_random.uniform(0, 1000)!r},"base":{_random.uniform(0.01, 50)!r}}}' for _ in range(200)
+]
+
+
 def _pairs(tools: list[str], first: str, second: str, values: list[str]) -> list[tuple[str, str]]:
     return [
         (tool, f'{{"{first}":{a},"{second}":{b}}}')
@@ -172,8 +187,9 @@ SERVERS = {
     "scientific": (
         "ScientificCalculatorMCP/scientific-calculator-mcp-server/target/"
         "scientific-calculator-mcp-server.jar",
-        _singles(["sqrt", "ln", "log10"], "x", POSITIVE)
+        _singles(["sqrt", "ln", "log10"], "x", POSITIVE + NON_ROUND)
         + _pairs(["log"], "x", "base", POSITIVE)
+        + [("log", args) for args in NON_ROUND_PAIRS]
         + [("sqrt", "{}"), ("sqrt", '{"x":"4"}'), ("log", '{"x":8}'), ("nosuch", '{"x":1}')],
     ),
 }

@@ -8,6 +8,7 @@ tool's error result, so the connection survives bad input. The arithmetic follow
 import math
 
 from simple_mcp_calculator.common.javafmt import java_double_str, java_rint
+from simple_mcp_calculator.common.javamath import java_pow, require_finite
 from simple_mcp_calculator.common.tool_server import READ_ONLY, Param, ServerSpec, Tool
 
 MAX_FACTORIAL = 20
@@ -19,16 +20,6 @@ MAX_EXACT_WHOLE_NUMBER = 2**53
 _MILLER_RABIN_BASES = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
 """The first 12 primes make Miller-Rabin exact for every n below 3.1e23 (so every n < 2^64),
 far beyond 2^53."""
-
-
-def _finite(result: float) -> float:
-    """Overflow (10 ^ 400) and undefined results (-8 ^ 0.5) would otherwise reach the client as
-    "Infinity" or "NaN" in a successful result."""
-    if math.isnan(result):
-        raise ArithmeticError("Result is undefined")
-    if math.isinf(result):
-        raise ArithmeticError("Result is too large")
-    return result
 
 
 def _nonzero(divisor: float) -> None:
@@ -46,35 +37,21 @@ def whole_number(n: float) -> int:
     return int(n)
 
 
-def java_pow(a: float, b: float) -> float:
-    """``Math.pow``. Python's ``math.pow`` raises where Java returns an infinity or NaN, and
-    returns 1.0 for ``1 ^ NaN`` and ``(±1) ^ ±Infinity``, which Java defines as NaN."""
-    if math.isnan(b) or (abs(a) == 1 and math.isinf(b)):
-        return math.nan
-    try:
-        return math.pow(a, b)
-    except OverflowError:
-        return math.inf
-    except ValueError:
-        # 0 to a negative power is infinite; a negative base to a fractional power is NaN.
-        return math.inf if a == 0 else math.nan
-
-
 def add(a: float, b: float) -> float:
-    return _finite(a + b)
+    return require_finite(a + b)
 
 
 def subtract(a: float, b: float) -> float:
-    return _finite(a - b)
+    return require_finite(a - b)
 
 
 def multiply(a: float, b: float) -> float:
-    return _finite(a * b)
+    return require_finite(a * b)
 
 
 def divide(a: float, b: float) -> float:
     _nonzero(b)
-    return _finite(a / b)
+    return require_finite(a / b)
 
 
 def remainder(a: float, b: float) -> float:
@@ -88,7 +65,7 @@ def remainder(a: float, b: float) -> float:
 
 
 def exponent(a: float, b: float) -> float:
-    return _finite(java_pow(a, b))
+    return require_finite(java_pow(a, b))
 
 
 def factorial(n: float) -> int:

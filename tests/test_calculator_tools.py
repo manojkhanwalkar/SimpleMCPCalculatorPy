@@ -2,11 +2,14 @@
 ``double`` corner cases the port has to reproduce explicitly."""
 
 import math
+import struct
 from collections.abc import Callable
+from pathlib import Path
 
 import pytest
 
 from simple_mcp_calculator.calculator_server import tools
+from simple_mcp_calculator.common.javamath import java_pow
 from simple_mcp_calculator.common.tool_server import READ_ONLY
 
 
@@ -160,7 +163,7 @@ def test_whole_number_bounds() -> None:
     ],
 )
 def test_java_pow(a: float, b: float, expected: float) -> None:
-    result = tools.java_pow(a, b)
+    result = java_pow(a, b)
     if math.isnan(expected):
         assert math.isnan(result)
     elif math.isinf(expected):
@@ -183,3 +186,35 @@ def test_every_tool_is_annotated_read_only() -> None:
         "multiply", "parity", "remainder", "subtract",
     ]  # fmt: skip
     assert all(t.hints == READ_ONLY for t in tools.TOOLS)
+
+
+def _java_ipow_cases() -> list[tuple[float, float, int]]:
+    path = Path(__file__).parent / "data" / "java_ipow.txt"
+    return [
+        (float(a), float(e), int(h, 16))
+        for a, e, h in map(str.split, path.read_text().splitlines())
+    ]
+
+
+def test_whole_number_powers_match_java_math_pow() -> None:
+    """15,351 whole-number powers from the JVM: exact for every non-negative exponent; negative
+    exponents may differ by one ulp (Java's intrinsic and C's pow both miss correct rounding
+    sometimes, in different places)."""
+    off_by_one = 0
+    for a, e, bits in _java_ipow_cases():
+        java = struct.unpack(">d", bits.to_bytes(8, "big"))[0]
+        got = java_pow(a, e)
+        if math.isinf(java) or java == 0:
+            assert got == java, (a, e)
+            assert math.copysign(1, got) == math.copysign(1, java), (a, e)
+        elif got != java:
+            assert e < 0, (a, e)
+            assert abs(got - java) <= math.ulp(java), (a, e)
+            off_by_one += 1
+    assert off_by_one <= 20
+
+
+def test_overflow_keeps_the_sign_of_an_odd_power() -> None:
+    assert java_pow(-1000000007, 37) == -math.inf
+    assert java_pow(-1000000007, 38) == math.inf
+    assert java_pow(-1e200, 3.0) == -math.inf
