@@ -7,6 +7,7 @@ Java server's ``initialize`` and ``tools/list`` results on its first line and on
 
 import json
 import math
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -48,12 +49,13 @@ def _reply_part(reply: dict[str, Any]) -> dict[str, Any]:
 class Golden:
     """The captured responses of one Java server, and how to compare a Python server with them.
 
-    ``ulp_tolerant`` names tools whose successful numeric results may differ from Java's by one
-    ulp (Java's ``Math.pow`` and C's ``pow`` round differently in rare cases).
+    ``ulp_limits`` maps a tool to how many ulps its successful numeric results may differ from
+    Java's: HotSpot's ``Math.pow``, ``Math.log`` and ``Math.log10`` intrinsics and the C library
+    round differently on some inputs.
     """
 
     spec: ServerSpec
-    ulp_tolerant: frozenset[str] = frozenset()
+    ulp_limits: Mapping[str, int] = field(default_factory=dict)
     meta: dict[str, Any] = field(init=False)
     cases: list[dict[str, Any]] = field(init=False)
 
@@ -81,12 +83,13 @@ class Golden:
         expected = _reply_part(case)
         if _reply_part(reply) == expected:
             return False
-        if case["tool"] not in self.ulp_tolerant or "result" not in case or "result" not in reply:
+        limit = self.ulp_limits.get(case["tool"], 0)
+        if not limit or "result" not in case or "result" not in reply:
             return True
         java, python = case["result"], reply["result"]
         if java["isError"] or python["isError"]:
             return True
-        return ulps_apart(java["content"][0]["text"], python["content"][0]["text"]) > 1
+        return ulps_apart(java["content"][0]["text"], python["content"][0]["text"]) > limit
 
     def in_process_mismatches(self) -> list[tuple[str, str, Any, Any]]:
         return [
@@ -100,7 +103,7 @@ class Golden:
         return [
             c
             for c in self.cases
-            if c["tool"] in self.ulp_tolerant
+            if c["tool"] in self.ulp_limits
             and _reply_part(self.in_process(c["tool"], c["arguments"])) != _reply_part(c)
         ]
 

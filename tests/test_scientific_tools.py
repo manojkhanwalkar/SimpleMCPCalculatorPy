@@ -103,3 +103,10 @@ def test_log_of_one_in_a_base_below_one_is_negative_zero_as_in_java() -> None:
 def test_every_tool_is_annotated_read_only() -> None:
     assert [t.name for t in tools.TOOLS] == ["ln", "log", "log10", "sqrt"]
     assert all(t.hints == READ_ONLY for t in tools.TOOLS)
+
+
+def test_exact_power_is_found_where_c_pow_rounds_differently() -> None:
+    """9^17 lies halfway between two doubles; Java's Math.pow and the port round it the same
+    way, so log recognises the exact power (Java: 17.0) and the neighbour is not one."""
+    assert tools.log(16677181699666568, 9) == 17.0
+    assert java_double_str(tools.log(16677181699666570, 9)) == "16.999999999999996"

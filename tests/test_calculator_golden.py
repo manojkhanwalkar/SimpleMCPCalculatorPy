@@ -1,8 +1,8 @@
 """The Python calculator server against responses captured from the Java server (6794f98).
 
-Two documented exceptions: ``exponent`` may differ by one ulp (Java's ``Math.pow`` and C's
-``pow`` round differently in rare cases; the Java spec itself only promises 1 ulp), and the
-port annotates every tool read-only (a decision for the port).
+Two documented exceptions: ``exponent`` with a negative exponent may differ by one ulp (Java's
+``Math.pow`` and C's ``pow`` round differently in rare cases; the Java spec itself only promises
+1 ulp), and the port annotates every tool read-only (a decision for the port).
 """
 
 import sys
@@ -14,7 +14,8 @@ from simple_mcp_calculator.calculator_server.tools import SPEC
 from tests.golden_support import Golden
 from tests.rpc import RawSession
 
-GOLDEN = Golden(SPEC, ulp_tolerant=frozenset({"exponent"}))
+# Math.pow with a negative exponent can differ from C pow by 1 ulp (none in the captured set).
+GOLDEN = Golden(SPEC, ulp_limits={"exponent": 1})
 
 
 def test_golden_file_is_complete() -> None:
@@ -26,9 +27,9 @@ def test_every_captured_call_matches_java() -> None:
     assert GOLDEN.in_process_mismatches() == []
 
 
-def test_ulp_tolerance_covers_exactly_the_known_pow_results() -> None:
-    """Keep the tolerance honest: a new pow divergence must be looked at, not absorbed."""
-    assert [c["arguments"] for c in GOLDEN.tolerated()] == ['{"a":9,"b":17}', '{"a":1e21,"b":10}']
+def test_every_captured_result_matches_without_tolerance() -> None:
+    """Integer powers are computed exactly, so even 9^17 and 1e21^10 match Java bit for bit."""
+    assert GOLDEN.tolerated() == []
 
 
 @pytest.fixture(scope="module")
