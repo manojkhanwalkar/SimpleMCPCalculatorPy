@@ -215,7 +215,8 @@ class Limits:
             try:
                 return parse(text)
             except ValueError:
-                raise ValueError(f"{name} must be a number, got {text!r}") from None
+                kind = "a whole number" if parse is int else "a number"
+                raise ValueError(f"{name} must be {kind}, got {text!r}") from None
 
         try:
             return cls(
@@ -347,8 +348,11 @@ def serve_stdio(spec: ServerSpec, limits: Limits | None = None) -> None:
     try:
         anyio.run(main)
     except KeyboardInterrupt:
-        # Ctrl+C on a server started by hand: stop quietly, as the Java server does.
+        # Ctrl+C on a server started by hand: no traceback, and the conventional exit status
+        # 130 (as the JVM gives). The SDK's stdin reader only notices once stdin has a line or
+        # closes, so the server stops then.
         log.info("%s interrupted", spec.name)
+        raise SystemExit(130) from None
     log.info("%s stopped", spec.name)
 
 
