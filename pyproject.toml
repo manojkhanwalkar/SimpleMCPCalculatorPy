@@ -11,6 +11,9 @@ dependencies = [
     "mcp>=2.3,<3",
 ]
 
+[project.scripts]
+calculator-mcp-server = "simple_mcp_calculator.calculator_server.__main__:main"
+
 [build-system]
 requires = ["uv_build>=0.10.12,<0.11.0"]
 build-backend = "uv_build"
