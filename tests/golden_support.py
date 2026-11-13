@@ -7,7 +7,9 @@ Java server's ``initialize`` and ``tools/list`` results on its first line and on
 
 import json
 import math
-from collections.abc import Mapping
+import sys
+from collections.abc import Iterator, Mapping
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -127,3 +129,13 @@ class Golden:
             if self.differs(c, reply):
                 mismatches.append((c["tool"], c["arguments"], _reply_part(reply)))
         return mismatches
+
+
+@contextmanager
+def server_session(module: str, log_dir: Path) -> Iterator[RawSession]:
+    """A raw JSON-RPC session with ``python -m <module>``, logging into ``log_dir``; the server
+    must exit cleanly, with nothing on stderr."""
+    command = [sys.executable, "-m", module, f"--logging.file.name={log_dir / 'server.log'}"]
+    with RawSession(command) as session:
+        yield session
+        assert session.close() == ""

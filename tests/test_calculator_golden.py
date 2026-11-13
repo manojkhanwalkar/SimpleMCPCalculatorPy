@@ -5,13 +5,12 @@ Two documented exceptions: ``exponent`` with a negative exponent may differ by o
 1 ulp), and the port annotates every tool read-only (a decision for the port).
 """
 
-import sys
 from collections.abc import Iterator
 
 import pytest
 
 from simple_mcp_calculator.calculator_server.tools import SPEC
-from tests.golden_support import Golden
+from tests.golden_support import Golden, server_session
 from tests.rpc import RawSession
 
 # Math.pow with a negative exponent can differ from C pow by 1 ulp (none in the captured set).
@@ -34,11 +33,10 @@ def test_every_captured_result_matches_without_tolerance() -> None:
 
 @pytest.fixture(scope="module")
 def server(tmp_path_factory: pytest.TempPathFactory) -> Iterator[RawSession]:
-    log = tmp_path_factory.mktemp("logs") / "server.log"
-    command = [sys.executable, "-m", "simple_mcp_calculator.calculator_server"]
-    with RawSession([*command, f"--logging.file.name={log}"]) as session:
+    with server_session(
+        "simple_mcp_calculator.calculator_server", tmp_path_factory.mktemp("logs")
+    ) as session:
         yield session
-        assert session.close() == ""
 
 
 def test_initialize_matches_java(server: RawSession) -> None:
