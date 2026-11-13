@@ -12,7 +12,6 @@ with two documented exceptions:
 
 import json
 import math
-import os
 import sys
 from collections.abc import Iterator
 from pathlib import Path
@@ -85,14 +84,14 @@ def test_every_captured_call_matches_java() -> None:
     assert mismatches == []
 
 
-def test_ulp_tolerance_is_rarely_needed() -> None:
-    """Keep the tolerance honest: it covers a handful of pow results, nothing else."""
+def test_ulp_tolerance_covers_exactly_the_known_pow_results() -> None:
+    """Keep the tolerance honest: a new pow divergence must be looked at, not absorbed."""
     tolerated = [
         c for c in CASES
         if c["tool"] in ULP_TOLERANT_TOOLS
         and _in_process(c["tool"], c["arguments"]) != {"result": c.get("result")}
     ]  # fmt: skip
-    assert len(tolerated) <= 5
+    assert [c["arguments"] for c in tolerated] == ['{"a":9,"b":17}', '{"a":1e21,"b":10}']
 
 
 @pytest.fixture(scope="module")
@@ -127,8 +126,4 @@ def test_sample_over_stdio_matches_java(server: RawSession) -> None:
         if _differs(c, reply):
             mismatches.append((c["tool"], c["arguments"], reply))
     assert mismatches == []
-
-
-def test_server_runs_with_default_limits() -> None:
-    """The sample above stays inside the default token bucket (burst 400)."""
-    assert len(CASES[::20]) + 25 < int(os.environ.get("CALCULATOR_MCP_BURST", "400"))
+    assert len(sample) < 400  # inside the default burst, so no call is rate-limited

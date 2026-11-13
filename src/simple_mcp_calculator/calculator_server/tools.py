@@ -17,7 +17,8 @@ MAX_EXACT_WHOLE_NUMBER = 2**53
 """Largest whole number a double represents exactly."""
 
 _MILLER_RABIN_BASES = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
-"""These bases make Miller-Rabin exact for every n below 3.3e24, far beyond 2^53."""
+"""The first 12 primes make Miller-Rabin exact for every n below 3.1e23 (so every n < 2^64),
+far beyond 2^53."""
 
 
 def _finite(result: float) -> float:
@@ -47,8 +48,8 @@ def whole_number(n: float) -> int:
 
 def java_pow(a: float, b: float) -> float:
     """``Math.pow``. Python's ``math.pow`` raises where Java returns an infinity or NaN, and
-    returns 1.0 for ``(±1) ^ ±Infinity``, which Java defines as NaN."""
-    if abs(a) == 1 and math.isinf(b):
+    returns 1.0 for ``1 ^ NaN`` and ``(±1) ^ ±Infinity``, which Java defines as NaN."""
+    if math.isnan(b) or (abs(a) == 1 and math.isinf(b)):
         return math.nan
     try:
         return math.pow(a, b)

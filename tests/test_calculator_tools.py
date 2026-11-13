@@ -149,6 +149,7 @@ def test_whole_number_bounds() -> None:
     ("a", "b", "expected"),
     [
         (1.0, math.inf, math.nan),  # C99 says 1.0; Java says NaN
+        (1.0, math.nan, math.nan),  # C99 says 1.0; Java says NaN for any NaN exponent
         (-1.0, math.inf, math.nan),
         (1.0, -math.inf, math.nan),
         (-0.0, -1.0, math.inf),  # math.pow raises; Java: -Infinity (still "too large")

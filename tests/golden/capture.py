@@ -18,6 +18,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from collections.abc import Callable
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -245,26 +246,42 @@ class Session:
         self.proc.stdin.flush()
 
     def close(self) -> None:
+        """Close stdin and wait for a clean exit; kill the JVM if it doesn't go."""
         assert self.proc.stdin is not None
         self.proc.stdin.close()
-        self.proc.wait(timeout=30)
+        try:
+            self.proc.wait(timeout=30)
+        except subprocess.TimeoutExpired:
+            self.kill()
 
     def kill(self) -> None:
-        self.proc.kill()
+        if self.proc.poll() is None:
+            self.proc.kill()
         self.proc.wait()
 
 
 def capture(java_root: Path, server: str) -> Path:
     jar_path, calls = SERVERS[server]
     jar = java_root / jar_path
-    restarts = 0
     with tempfile.TemporaryDirectory() as tmp:
         log = Path(tmp) / "server.log"
-        session = Session(jar, log)
+        lines = _capture_calls(lambda: Session(jar, log), calls)
+    out = HERE / f"{jar.stem}.jsonl"
+    out.write_text("\n".join(lines) + "\n")
+    return out
+
+
+def _capture_calls(start: Callable[[], Session], calls: list[tuple[str, str]]) -> list[str]:
+    """Run every call; a dropped reply or a dead server restarts the server and retries. The
+    current server is always killed on the way out, whatever happens."""
+    restarts = 0
+    session = start()
+    try:
         tools = session.request("tools/list")
         lines = [
             json.dumps(
-                {"initialize": session.initialize_result, "tools": tools["result"]}, sort_keys=True
+                {"initialize": session.initialize_result, "tools": tools["result"]},
+                sort_keys=True,
             )
         ]
         for tool, arguments in calls:
@@ -274,21 +291,21 @@ def capture(java_root: Path, server: str) -> Path:
                         "tools/call", f'{{"name":"{tool}","arguments":{arguments}}}'
                     )
                     break
-                except TimeoutError:
+                except TimeoutError, EOFError:
                     if attempt == MAX_ATTEMPTS - 1:
                         raise
                     session.kill()
                     restarts += 1
-                    session = Session(jar, log)
+                    session = start()
             entry: dict[str, object] = {"tool": tool, "arguments": arguments}
             entry.update({k: reply[k] for k in ("result", "error") if k in reply})
             lines.append(json.dumps(entry, sort_keys=True))
         session.close()
-    out = HERE / f"{jar.stem}.jsonl"
-    out.write_text("\n".join(lines) + "\n")
+    finally:
+        session.kill()
     if restarts:
-        print(f"{jar.stem}: restarted the Java server {restarts} time(s) after a dropped reply")
-    return out
+        print(f"restarted the Java server {restarts} time(s) after a dropped reply")
+    return lines
 
 
 if __name__ == "__main__":
