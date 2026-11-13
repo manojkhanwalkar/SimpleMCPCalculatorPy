@@ -7,6 +7,7 @@ from collections.abc import Callable
 import pytest
 
 from simple_mcp_calculator.calculator_server import tools
+from simple_mcp_calculator.common.javamath import java_pow
 from simple_mcp_calculator.common.tool_server import READ_ONLY
 
 
@@ -160,7 +161,7 @@ def test_whole_number_bounds() -> None:
     ],
 )
 def test_java_pow(a: float, b: float, expected: float) -> None:
-    result = tools.java_pow(a, b)
+    result = java_pow(a, b)
     if math.isnan(expected):
         assert math.isnan(result)
     elif math.isinf(expected):

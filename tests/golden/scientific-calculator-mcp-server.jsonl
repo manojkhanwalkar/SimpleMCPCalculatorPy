@@ -1,0 +1,933 @@
+{"initialize": {"capabilities": {"logging": {}, "tools": {"listChanged": true}}, "instructions": "Scientific calculator tools: sqrt (square root), ln (natural log), log10, and log (logarithm of x in any base).", "protocolVersion": "2025-11-25", "serverInfo": {"name": "scientific-calculator-mcp-server", "version": "1.0.0"}}, "tools": {"tools": [{"annotations": {"destructiveHint": false, "idempotentHint": true, "openWorldHint": false, "readOnlyHint": true, "title": ""}, "description": "Natural logarithm (base e) of x. Fails unless x > 0", "inputSchema": {"$schema": "https://json-schema.org/draft/2020-12/schema", "properties": {"x": {"description": "Number to take the logarithm of (must be > 0)", "format": "double", "type": "number"}}, "required": ["x"], "type": "object"}, "name": "ln", "title": "ln"}, {"annotations": {"destructiveHint": false, "idempotentHint": true, "openWorldHint": false, "readOnlyHint": true, "title": ""}, "description": "Logarithm of x in the given base: log_base(x). Fails unless x > 0, base > 0 and base != 1", "inputSchema": {"$schema": "https://json-schema.org/draft/2020-12/schema", "properties": {"base": {"description": "Base of the logarithm (must be > 0 and not 1)", "format": "double", "type": "number"}, "x": {"description": "Number to take the logarithm of (must be > 0)", "format": "double", "type": "number"}}, "required": ["x", "base"], "type": "object"}, "name": "log", "title": "log"}, {"annotations": {"destructiveHint": false, "idempotentHint": true, "openWorldHint": false, "readOnlyHint": true, "title": ""}, "description": "Base-10 logarithm of x. Fails unless x > 0", "inputSchema": {"$schema": "https://json-schema.org/draft/2020-12/schema", "properties": {"x": {"description": "Number to take the logarithm of (must be > 0)", "format": "double", "type": "number"}}, "required": ["x"], "type": "object"}, "name": "log10", "title": "log10"}, {"annotations": {"destructiveHint": false, "idempotentHint": true, "openWorldHint": false, "readOnlyHint": true, "title": ""}, "description": "Square root of x. Fails if x is negative", "inputSchema": {"$schema": "https://json-schema.org/draft/2020-12/schema", "properties": {"x": {"description": "Number to take the square root of (must not be negative)", "format": "double", "type": "number"}}, "required": ["x"], "type": "object"}, "name": "sqrt", "title": "sqrt"}]}}
+{"arguments": "{\"x\":0}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":-0.0}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":2}", "result": {"content": [{"text": "1.4142135623730951", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":2.25}", "result": {"content": [{"text": "1.5", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":144}", "result": {"content": [{"text": "12.0", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1000}", "result": {"content": [{"text": "31.622776601683793", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":0.01}", "result": {"content": [{"text": "0.1", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1024}", "result": {"content": [{"text": "32.0", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":2.718281828459045}", "result": {"content": [{"text": "1.6487212707001282", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":0.36787944117144233}", "result": {"content": [{"text": "0.6065306597126334", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1e15}", "result": {"content": [{"text": "3.162277660168379E7", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1e-300}", "result": {"content": [{"text": "1.0E-150", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1e308}", "result": {"content": [{"text": "1.0E154", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1.7976931348623157e308}", "result": {"content": [{"text": "1.3407807929942596E154", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":5e-324}", "result": {"content": [{"text": "2.2227587494850775E-162", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":-1}", "result": {"content": [{"text": "Square root of a negative number\nSquare root of a negative number", "type": "text"}], "isError": true}, "tool": "sqrt"}
+{"arguments": "{\"x\":-4}", "result": {"content": [{"text": "Square root of a negative number\nSquare root of a negative number", "type": "text"}], "isError": true}, "tool": "sqrt"}
+{"arguments": "{\"x\":-0.001}", "result": {"content": [{"text": "Square root of a negative number\nSquare root of a negative number", "type": "text"}], "isError": true}, "tool": "sqrt"}
+{"arguments": "{\"x\":8}", "result": {"content": [{"text": "2.8284271247461903", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":81}", "result": {"content": [{"text": "9.0", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":243}", "result": {"content": [{"text": "15.588457268119896", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":125}", "result": {"content": [{"text": "11.180339887498949", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":25}", "result": {"content": [{"text": "5.0", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":0.5}", "result": {"content": [{"text": "0.7071067811865476", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":7}", "result": {"content": [{"text": "2.6457513110645907", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":10}", "result": {"content": [{"text": "3.1622776601683795", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":3}", "result": {"content": [{"text": "1.7320508075688772", "type": "text"}], "isError": false}, "tool": "sqrt"}
+{"arguments": "{\"x\":1e400}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "sqrt"}
+{"arguments": "{\"x\":0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "ln"}
+{"arguments": "{\"x\":-0.0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "ln"}
+{"arguments": "{\"x\":1}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":2}", "result": {"content": [{"text": "0.6931471805599453", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":2.25}", "result": {"content": [{"text": "0.8109302162163288", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":144}", "result": {"content": [{"text": "4.969813299576001", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":1000}", "result": {"content": [{"text": "6.907755278982137", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":0.01}", "result": {"content": [{"text": "-4.605170185988091", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":1024}", "result": {"content": [{"text": "6.931471805599453", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":2.718281828459045}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":0.36787944117144233}", "result": {"content": [{"text": "-1.0", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":1e15}", "result": {"content": [{"text": "34.538776394910684", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":1e-300}", "result": {"content": [{"text": "-690.7755278982137", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":1e308}", "result": {"content": [{"text": "709.1962086421661", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":1.7976931348623157e308}", "result": {"content": [{"text": "709.782712893384", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":5e-324}", "result": {"content": [{"text": "-744.4400719213812", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":-1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "ln"}
+{"arguments": "{\"x\":-4}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "ln"}
+{"arguments": "{\"x\":-0.001}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "ln"}
+{"arguments": "{\"x\":8}", "result": {"content": [{"text": "2.0794415416798357", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":81}", "result": {"content": [{"text": "4.394449154672439", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":243}", "result": {"content": [{"text": "5.493061443340548", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":125}", "result": {"content": [{"text": "4.8283137373023015", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":25}", "result": {"content": [{"text": "3.2188758248682006", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":0.5}", "result": {"content": [{"text": "-0.6931471805599453", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":7}", "result": {"content": [{"text": "1.9459101490553132", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":10}", "result": {"content": [{"text": "2.302585092994046", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":3}", "result": {"content": [{"text": "1.0986122886681098", "type": "text"}], "isError": false}, "tool": "ln"}
+{"arguments": "{\"x\":1e400}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "ln"}
+{"arguments": "{\"x\":0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log10"}
+{"arguments": "{\"x\":-0.0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log10"}
+{"arguments": "{\"x\":1}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":2}", "result": {"content": [{"text": "0.3010299956639812", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":2.25}", "result": {"content": [{"text": "0.3521825181113625", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":144}", "result": {"content": [{"text": "2.1583624920952498", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":1000}", "result": {"content": [{"text": "3.0", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":0.01}", "result": {"content": [{"text": "-2.0", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":1024}", "result": {"content": [{"text": "3.010299956639812", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":2.718281828459045}", "result": {"content": [{"text": "0.4342944819032518", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":0.36787944117144233}", "result": {"content": [{"text": "-0.4342944819032518", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":1e15}", "result": {"content": [{"text": "15.0", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":1e-300}", "result": {"content": [{"text": "-300.0", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":1e308}", "result": {"content": [{"text": "308.0", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":1.7976931348623157e308}", "result": {"content": [{"text": "308.25471555991675", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":5e-324}", "result": {"content": [{"text": "-323.3062153431158", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":-1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log10"}
+{"arguments": "{\"x\":-4}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log10"}
+{"arguments": "{\"x\":-0.001}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log10"}
+{"arguments": "{\"x\":8}", "result": {"content": [{"text": "0.9030899869919435", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":81}", "result": {"content": [{"text": "1.9084850188786497", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":243}", "result": {"content": [{"text": "2.385606273598312", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":125}", "result": {"content": [{"text": "2.0969100130080562", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":25}", "result": {"content": [{"text": "1.3979400086720377", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":0.5}", "result": {"content": [{"text": "-0.3010299956639812", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":7}", "result": {"content": [{"text": "0.8450980400142568", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":10}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":3}", "result": {"content": [{"text": "0.47712125471966244", "type": "text"}], "isError": false}, "tool": "log10"}
+{"arguments": "{\"x\":1e400}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log10"}
+{"arguments": "{\"x\":0,\"base\":0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":2}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":2.25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":144}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1000}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":0.01}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1024}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":2.718281828459045}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":0.36787944117144233}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1e15}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1e-300}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":5e-324}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":-1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":-4}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":8}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":81}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":243}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":125}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":0.5}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":7}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":10}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":3}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0,\"base\":1e400}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":2}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":2.25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":144}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1000}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":0.01}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1024}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":2.718281828459045}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":0.36787944117144233}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1e15}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1e-300}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":5e-324}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":-1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":-4}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":8}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":81}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":243}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":125}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":0.5}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":7}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":10}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":3}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.0,\"base\":1e400}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":2}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":2.25}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":144}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1000}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":0.01}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1024}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":2.718281828459045}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1e15}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1e-300}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1e308}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":5e-324}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":8}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":81}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":243}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":125}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":25}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":0.5}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":7}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":10}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":3}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":2}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":2.25}", "result": {"content": [{"text": "0.8547556456757274", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":144}", "result": {"content": [{"text": "0.1394714728255649", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1000}", "result": {"content": [{"text": "0.10034333188799373", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":0.01}", "result": {"content": [{"text": "-0.1505149978319906", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1024}", "result": {"content": [{"text": "0.09999999999999999", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":2.718281828459045}", "result": {"content": [{"text": "0.6931471805599453", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-0.6931471805599453", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1e15}", "result": {"content": [{"text": "0.020068666377598746", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1e-300}", "result": {"content": [{"text": "-0.0010034333188799374", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1e308}", "result": {"content": [{"text": "9.773701157921467E-4", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "9.765625E-4", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":5e-324}", "result": {"content": [{"text": "-9.31098696461825E-4", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":8}", "result": {"content": [{"text": "0.33333333333333337", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":81}", "result": {"content": [{"text": "0.15773243839286435", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":243}", "result": {"content": [{"text": "0.12618595071429148", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":125}", "result": {"content": [{"text": "0.143558852691131", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":25}", "result": {"content": [{"text": "0.21533827903669653", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":0.5}", "result": {"content": [{"text": "-1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":7}", "result": {"content": [{"text": "0.3562071871080222", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":10}", "result": {"content": [{"text": "0.30102999566398114", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":3}", "result": {"content": [{"text": "0.6309297535714574", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":2}", "result": {"content": [{"text": "1.1699250014423124", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":2.25}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":144}", "result": {"content": [{"text": "0.16317116304661047", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1000}", "result": {"content": [{"text": "0.1173941727037875", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":0.01}", "result": {"content": [{"text": "-0.17609125905568127", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1024}", "result": {"content": [{"text": "0.11699250014423124", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":2.718281828459045}", "result": {"content": [{"text": "0.8109302162163288", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-0.8109302162163288", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1e15}", "result": {"content": [{"text": "0.0234788345407575", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1e-300}", "result": {"content": [{"text": "-0.001173941727037875", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1e308}", "result": {"content": [{"text": "0.0011434497341278002", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.0011425048842210082", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":5e-324}", "result": {"content": [{"text": "-0.0010893156438010357", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":8}", "result": {"content": [{"text": "0.38997500048077083", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":81}", "result": {"content": [{"text": "0.18453512321427126", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":243}", "result": {"content": [{"text": "0.14762809857141704", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":125}", "result": {"content": [{"text": "0.16795309094172814", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":25}", "result": {"content": [{"text": "0.25192963641259225", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":0.5}", "result": {"content": [{"text": "-1.1699250014423124", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":7}", "result": {"content": [{"text": "0.41673569389111487", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":10}", "result": {"content": [{"text": "0.3521825181113625", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":3}", "result": {"content": [{"text": "0.738140492857085", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.25,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":2}", "result": {"content": [{"text": "7.169925001442313", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":2.25}", "result": {"content": [{"text": "6.128533874054364", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":144}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1000}", "result": {"content": [{"text": "0.7194541640317499", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":0.01}", "result": {"content": [{"text": "-1.0791812460476249", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1024}", "result": {"content": [{"text": "0.7169925001442312", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":2.718281828459045}", "result": {"content": [{"text": "4.969813299576001", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-4.969813299576001", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1e15}", "result": {"content": [{"text": "0.14389083280634998", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1e-300}", "result": {"content": [{"text": "-0.007194541640317499", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1e308}", "result": {"content": [{"text": "0.007007670428880681", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.007001879884221009", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":5e-324}", "result": {"content": [{"text": "-0.006675907822571986", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":8}", "result": {"content": [{"text": "2.389975000480771", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":81}", "result": {"content": [{"text": "1.1309297535714573", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":243}", "result": {"content": [{"text": "0.904743802857166", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":125}", "result": {"content": [{"text": "1.0293062070885142", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":25}", "result": {"content": [{"text": "1.5439593106327716", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":0.5}", "result": {"content": [{"text": "-7.169925001442313", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":7}", "result": {"content": [{"text": "2.553978816539248", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":10}", "result": {"content": [{"text": "2.1583624920952493", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":3}", "result": {"content": [{"text": "4.523719014285829", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":144,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":2}", "result": {"content": [{"text": "9.965784284662087", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":2.25}", "result": {"content": [{"text": "8.518310380901358", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":144}", "result": {"content": [{"text": "1.3899426120436902", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1000}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":0.01}", "result": {"content": [{"text": "-1.5", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1024}", "result": {"content": [{"text": "0.9965784284662087", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":2.718281828459045}", "result": {"content": [{"text": "6.907755278982137", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-6.907755278982137", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1e15}", "result": {"content": [{"text": "0.2", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1e-300}", "result": {"content": [{"text": "-0.01", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1e308}", "result": {"content": [{"text": "0.00974025974025974", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.00973221121549032", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":5e-324}", "result": {"content": [{"text": "-0.00927912875666861", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":8}", "result": {"content": [{"text": "3.3219280948873626", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":81}", "result": {"content": [{"text": "1.5719274557170382", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":243}", "result": {"content": [{"text": "1.2575419645736308", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":125}", "result": {"content": [{"text": "1.430676558073393", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":25}", "result": {"content": [{"text": "2.14601483711009", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":0.5}", "result": {"content": [{"text": "-9.965784284662087", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":7}", "result": {"content": [{"text": "3.549883987364815", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":10}", "result": {"content": [{"text": "3.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":3}", "result": {"content": [{"text": "6.287709822868153", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1000,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":2}", "result": {"content": [{"text": "-6.643856189774724", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":2.25}", "result": {"content": [{"text": "-5.678873587267573", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":144}", "result": {"content": [{"text": "-0.9266284080291267", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1000}", "result": {"content": [{"text": "-0.6666666666666666", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":0.01}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1024}", "result": {"content": [{"text": "-0.6643856189774724", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":2.718281828459045}", "result": {"content": [{"text": "-4.605170185988091", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":0.36787944117144233}", "result": {"content": [{"text": "4.605170185988091", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1e15}", "result": {"content": [{"text": "-0.13333333333333333", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1e-300}", "result": {"content": [{"text": "0.006666666666666666", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1e308}", "result": {"content": [{"text": "-0.006493506493506493", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "-0.006488140810326879", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":5e-324}", "result": {"content": [{"text": "0.006186085837779073", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":8}", "result": {"content": [{"text": "-2.2146187299249083", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":81}", "result": {"content": [{"text": "-1.0479516371446922", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":243}", "result": {"content": [{"text": "-0.8383613097157538", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":125}", "result": {"content": [{"text": "-0.9537843720489285", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":25}", "result": {"content": [{"text": "-1.430676558073393", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":0.5}", "result": {"content": [{"text": "6.643856189774724", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":7}", "result": {"content": [{"text": "-2.3665893249098766", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":10}", "result": {"content": [{"text": "-2.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":3}", "result": {"content": [{"text": "-4.191806548578769", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.01,\"base\":1e400}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":2}", "result": {"content": [{"text": "10.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":2.25}", "result": {"content": [{"text": "8.547556456757274", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":144}", "result": {"content": [{"text": "1.3947147282556491", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1000}", "result": {"content": [{"text": "1.0034333188799374", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":0.01}", "result": {"content": [{"text": "-1.505149978319906", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1024}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":2.718281828459045}", "result": {"content": [{"text": "6.931471805599453", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-6.931471805599453", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1e15}", "result": {"content": [{"text": "0.20068666377598748", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1e-300}", "result": {"content": [{"text": "-0.010034333188799373", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1e308}", "result": {"content": [{"text": "0.009773701157921467", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.009765625", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":5e-324}", "result": {"content": [{"text": "-0.00931098696461825", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":8}", "result": {"content": [{"text": "3.3333333333333335", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":81}", "result": {"content": [{"text": "1.5773243839286435", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":243}", "result": {"content": [{"text": "1.2618595071429148", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":125}", "result": {"content": [{"text": "1.43558852691131", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":25}", "result": {"content": [{"text": "2.1533827903669653", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":0.5}", "result": {"content": [{"text": "-10.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":7}", "result": {"content": [{"text": "3.5620718710802217", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":10}", "result": {"content": [{"text": "3.0102999566398116", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":3}", "result": {"content": [{"text": "6.309297535714574", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1024,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":2}", "result": {"content": [{"text": "1.4426950408889634", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":2.25}", "result": {"content": [{"text": "1.2331517311882159", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":144}", "result": {"content": [{"text": "0.20121480219092233", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1000}", "result": {"content": [{"text": "0.14476482730108395", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":0.01}", "result": {"content": [{"text": "-0.21714724095162594", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1024}", "result": {"content": [{"text": "0.14426950408889633", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":2.718281828459045}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1e15}", "result": {"content": [{"text": "0.02895296546021679", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1e-300}", "result": {"content": [{"text": "-0.0014476482730108396", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1e308}", "result": {"content": [{"text": "0.001410047019166402", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.0014088818758681283", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":5e-324}", "result": {"content": [{"text": "-0.0013432914719636532", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":8}", "result": {"content": [{"text": "0.48089834696298783", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":81}", "result": {"content": [{"text": "0.22755980665670933", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":243}", "result": {"content": [{"text": "0.1820478453253675", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":125}", "result": {"content": [{"text": "0.2071116448532039", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":25}", "result": {"content": [{"text": "0.31066746727980593", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":0.5}", "result": {"content": [{"text": "-1.4426950408889634", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":7}", "result": {"content": [{"text": "0.5138983423697507", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":10}", "result": {"content": [{"text": "0.43429448190325176", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":3}", "result": {"content": [{"text": "0.9102392266268373", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":2.718281828459045,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":2}", "result": {"content": [{"text": "-1.4426950408889634", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":2.25}", "result": {"content": [{"text": "-1.2331517311882159", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":144}", "result": {"content": [{"text": "-0.20121480219092233", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1000}", "result": {"content": [{"text": "-0.14476482730108395", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":0.01}", "result": {"content": [{"text": "0.21714724095162594", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1024}", "result": {"content": [{"text": "-0.14426950408889633", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":2.718281828459045}", "result": {"content": [{"text": "-1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":0.36787944117144233}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1e15}", "result": {"content": [{"text": "-0.02895296546021679", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1e-300}", "result": {"content": [{"text": "0.0014476482730108396", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1e308}", "result": {"content": [{"text": "-0.001410047019166402", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "-0.0014088818758681283", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":5e-324}", "result": {"content": [{"text": "0.0013432914719636532", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":8}", "result": {"content": [{"text": "-0.48089834696298783", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":81}", "result": {"content": [{"text": "-0.22755980665670933", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":243}", "result": {"content": [{"text": "-0.1820478453253675", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":125}", "result": {"content": [{"text": "-0.2071116448532039", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":25}", "result": {"content": [{"text": "-0.31066746727980593", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":0.5}", "result": {"content": [{"text": "1.4426950408889634", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":7}", "result": {"content": [{"text": "-0.5138983423697507", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":10}", "result": {"content": [{"text": "-0.43429448190325176", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":3}", "result": {"content": [{"text": "-0.9102392266268373", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.36787944117144233,\"base\":1e400}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":2}", "result": {"content": [{"text": "49.82892142331043", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":2.25}", "result": {"content": [{"text": "42.591551904506794", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":144}", "result": {"content": [{"text": "6.949713060218451", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1000}", "result": {"content": [{"text": "5.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":0.01}", "result": {"content": [{"text": "-7.500000000000001", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1024}", "result": {"content": [{"text": "4.9828921423310435", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":2.718281828459045}", "result": {"content": [{"text": "34.538776394910684", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-34.538776394910684", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1e15}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1e-300}", "result": {"content": [{"text": "-0.05", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1e308}", "result": {"content": [{"text": "0.0487012987012987", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.048661056077451595", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":5e-324}", "result": {"content": [{"text": "-0.04639564378334305", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":8}", "result": {"content": [{"text": "16.609640474436812", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":81}", "result": {"content": [{"text": "7.859637278585192", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":243}", "result": {"content": [{"text": "6.287709822868154", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":125}", "result": {"content": [{"text": "7.1533827903669644", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":25}", "result": {"content": [{"text": "10.730074185550448", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":0.5}", "result": {"content": [{"text": "-49.82892142331043", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":7}", "result": {"content": [{"text": "17.749419936824076", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":10}", "result": {"content": [{"text": "15.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":3}", "result": {"content": [{"text": "31.438549114340766", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e15,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":2}", "result": {"content": [{"text": "-996.5784284662087", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":2.25}", "result": {"content": [{"text": "-851.8310380901358", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":144}", "result": {"content": [{"text": "-138.99426120436902", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1000}", "result": {"content": [{"text": "-100.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":0.01}", "result": {"content": [{"text": "150.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1024}", "result": {"content": [{"text": "-99.65784284662087", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":2.718281828459045}", "result": {"content": [{"text": "-690.7755278982137", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":0.36787944117144233}", "result": {"content": [{"text": "690.7755278982137", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1e15}", "result": {"content": [{"text": "-20.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1e-300}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1e308}", "result": {"content": [{"text": "-0.974025974025974", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "-0.973221121549032", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":5e-324}", "result": {"content": [{"text": "0.927912875666861", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":8}", "result": {"content": [{"text": "-332.19280948873626", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":81}", "result": {"content": [{"text": "-157.19274557170382", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":243}", "result": {"content": [{"text": "-125.75419645736308", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":125}", "result": {"content": [{"text": "-143.0676558073393", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":25}", "result": {"content": [{"text": "-214.60148371100897", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":0.5}", "result": {"content": [{"text": "996.5784284662087", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":7}", "result": {"content": [{"text": "-354.9883987364815", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":10}", "result": {"content": [{"text": "-300.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":3}", "result": {"content": [{"text": "-628.7709822868153", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e-300,\"base\":1e400}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":2}", "result": {"content": [{"text": "1023.1538532253077", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":2.25}", "result": {"content": [{"text": "874.5465324392062", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":144}", "result": {"content": [{"text": "142.70077483648552", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1000}", "result": {"content": [{"text": "102.66666666666667", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":0.01}", "result": {"content": [{"text": "-154.00000000000003", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1024}", "result": {"content": [{"text": "102.31538532253076", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":2.718281828459045}", "result": {"content": [{"text": "709.1962086421661", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-709.1962086421661", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1e15}", "result": {"content": [{"text": "20.533333333333335", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1e-300}", "result": {"content": [{"text": "-1.0266666666666666", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1e308}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.9991736847903395", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":5e-324}", "result": {"content": [{"text": "-0.9526572190179774", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":8}", "result": {"content": [{"text": "341.0512844084359", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":81}", "result": {"content": [{"text": "161.3845521202826", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":243}", "result": {"content": [{"text": "129.1076416962261", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":125}", "result": {"content": [{"text": "146.882793295535", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":25}", "result": {"content": [{"text": "220.32418994330254", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":0.5}", "result": {"content": [{"text": "-1023.1538532253077", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":7}", "result": {"content": [{"text": "364.454756036121", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":10}", "result": {"content": [{"text": "308.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":3}", "result": {"content": [{"text": "645.5382084811304", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e308,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":2}", "result": {"content": [{"text": "1024.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":2.25}", "result": {"content": [{"text": "875.2697811719448", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":144}", "result": {"content": [{"text": "142.81878817337846", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1000}", "result": {"content": [{"text": "102.75157185330558", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":0.01}", "result": {"content": [{"text": "-154.12735777995837", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1024}", "result": {"content": [{"text": "102.39999999999999", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":2.718281828459045}", "result": {"content": [{"text": "709.782712893384", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-709.782712893384", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1e15}", "result": {"content": [{"text": "20.550314370661116", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1e-300}", "result": {"content": [{"text": "-1.027515718533056", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1e308}", "result": {"content": [{"text": "1.0008269985711582", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":5e-324}", "result": {"content": [{"text": "-0.9534450651769087", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":8}", "result": {"content": [{"text": "341.33333333333337", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":81}", "result": {"content": [{"text": "161.5180169142931", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":243}", "result": {"content": [{"text": "129.21441353143447", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":125}", "result": {"content": [{"text": "147.00426515571814", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":25}", "result": {"content": [{"text": "220.50639773357724", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":0.5}", "result": {"content": [{"text": "-1024.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":7}", "result": {"content": [{"text": "364.7561595986147", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":10}", "result": {"content": [{"text": "308.2547155599167", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":3}", "result": {"content": [{"text": "646.0720676571724", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1.7976931348623157e308,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":2}", "result": {"content": [{"text": "-1074.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":2.25}", "result": {"content": [{"text": "-918.0075634557312", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":144}", "result": {"content": [{"text": "-149.79236181465672", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1000}", "result": {"content": [{"text": "-107.76873844770526", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":0.01}", "result": {"content": [{"text": "161.6531076715579", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1024}", "result": {"content": [{"text": "-107.39999999999999", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":2.718281828459045}", "result": {"content": [{"text": "-744.4400719213812", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":0.36787944117144233}", "result": {"content": [{"text": "744.4400719213812", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1e15}", "result": {"content": [{"text": "-21.55374768954105", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1e-300}", "result": {"content": [{"text": "1.0776873844770527", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1e308}", "result": {"content": [{"text": "-1.0496955043607654", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "-1.048828125", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":5e-324}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":8}", "result": {"content": [{"text": "-358.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":81}", "result": {"content": [{"text": "-169.4046388339363", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":243}", "result": {"content": [{"text": "-135.52371106714907", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":125}", "result": {"content": [{"text": "-154.1822077902747", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":25}", "result": {"content": [{"text": "-231.27331168541207", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":0.5}", "result": {"content": [{"text": "1074.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":7}", "result": {"content": [{"text": "-382.5665189540158", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":10}", "result": {"content": [{"text": "-323.30621534311575", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":3}", "result": {"content": [{"text": "-677.6185553357452", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":5e-324,\"base\":1e400}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":2}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":2.25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":144}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1000}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":0.01}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1024}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":2.718281828459045}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":0.36787944117144233}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1e15}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1e-300}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":5e-324}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":-1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":-4}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":8}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":81}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":243}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":125}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":0.5}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":7}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":10}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":3}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-1,\"base\":1e400}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":2}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":2.25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":144}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1000}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":0.01}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1024}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":2.718281828459045}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":0.36787944117144233}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1e15}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1e-300}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":5e-324}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":-1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":-4}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":8}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":81}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":243}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":125}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":0.5}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":7}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":10}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":3}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-4,\"base\":1e400}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":2}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":2.25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":144}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1000}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":0.01}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1024}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":2.718281828459045}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":0.36787944117144233}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1e15}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1e-300}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":5e-324}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":-1}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":-4}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":8}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":81}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":243}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":125}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":25}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":0.5}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":7}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":10}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":3}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":-0.001,\"base\":1e400}", "result": {"content": [{"text": "Logarithm is only defined for x > 0\nLogarithm is only defined for x > 0", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":2}", "result": {"content": [{"text": "3.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":2.25}", "result": {"content": [{"text": "2.564266937027182", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":144}", "result": {"content": [{"text": "0.4184144184766947", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1000}", "result": {"content": [{"text": "0.3010299956639812", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":0.01}", "result": {"content": [{"text": "-0.4515449934959718", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1024}", "result": {"content": [{"text": "0.3", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":2.718281828459045}", "result": {"content": [{"text": "2.0794415416798357", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-2.0794415416798357", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1e15}", "result": {"content": [{"text": "0.060205999132796235", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1e-300}", "result": {"content": [{"text": "-0.0030102999566398118", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1e308}", "result": {"content": [{"text": "0.00293211034737644", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.0029296875", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":5e-324}", "result": {"content": [{"text": "-0.002793296089385475", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":8}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":81}", "result": {"content": [{"text": "0.473197315178593", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":243}", "result": {"content": [{"text": "0.37855785214287446", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":125}", "result": {"content": [{"text": "0.430676558073393", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":25}", "result": {"content": [{"text": "0.6460148371100896", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":0.5}", "result": {"content": [{"text": "-3.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":7}", "result": {"content": [{"text": "1.0686215613240664", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":10}", "result": {"content": [{"text": "0.9030899869919434", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":3}", "result": {"content": [{"text": "1.892789260714372", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":8,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":2}", "result": {"content": [{"text": "6.339850002884625", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":2.25}", "result": {"content": [{"text": "5.41902258270291", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":144}", "result": {"content": [{"text": "0.8842282173954806", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1000}", "result": {"content": [{"text": "0.63616167295955", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":0.01}", "result": {"content": [{"text": "-0.9542425094393251", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1024}", "result": {"content": [{"text": "0.6339850002884625", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":2.718281828459045}", "result": {"content": [{"text": "4.394449154672439", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-4.394449154672439", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1e15}", "result": {"content": [{"text": "0.12723233459191", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1e-300}", "result": {"content": [{"text": "-0.0063616167295955", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1e308}", "result": {"content": [{"text": "0.006196379931424188", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.006191259768442017", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":5e-324}", "result": {"content": [{"text": "-0.005903026073449372", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":8}", "result": {"content": [{"text": "2.1132833342948754", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":81}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":243}", "result": {"content": [{"text": "0.8", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":125}", "result": {"content": [{"text": "0.9101415926479804", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":25}", "result": {"content": [{"text": "1.3652123889719707", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":0.5}", "result": {"content": [{"text": "-6.339850002884625", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":7}", "result": {"content": [{"text": "2.2583001362143187", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":10}", "result": {"content": [{"text": "1.9084850188786497", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":3}", "result": {"content": [{"text": "4.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":81,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":2}", "result": {"content": [{"text": "7.924812503605781", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":2.25}", "result": {"content": [{"text": "6.773778228378637", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":144}", "result": {"content": [{"text": "1.1052852717443507", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1000}", "result": {"content": [{"text": "0.7952020911994374", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":0.01}", "result": {"content": [{"text": "-1.192803136799156", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1024}", "result": {"content": [{"text": "0.792481250360578", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":2.718281828459045}", "result": {"content": [{"text": "5.493061443340548", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-5.493061443340548", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1e15}", "result": {"content": [{"text": "0.1590404182398875", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1e-300}", "result": {"content": [{"text": "-0.007952020911994375", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1e308}", "result": {"content": [{"text": "0.007745474914280234", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.007739074710552521", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":5e-324}", "result": {"content": [{"text": "-0.007378782591811715", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":8}", "result": {"content": [{"text": "2.6416041678685938", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":81}", "result": {"content": [{"text": "1.2499999999999998", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":243}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":125}", "result": {"content": [{"text": "1.1376769908099753", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":25}", "result": {"content": [{"text": "1.7065154862149632", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":0.5}", "result": {"content": [{"text": "-7.924812503605781", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":7}", "result": {"content": [{"text": "2.8228751702678982", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":10}", "result": {"content": [{"text": "2.3856062735983117", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":3}", "result": {"content": [{"text": "5.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":243,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":2}", "result": {"content": [{"text": "6.965784284662088", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":2.25}", "result": {"content": [{"text": "5.954043443874178", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":144}", "result": {"content": [{"text": "0.9715281935669955", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1000}", "result": {"content": [{"text": "0.6989700043360189", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":0.01}", "result": {"content": [{"text": "-1.0484550065040283", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1024}", "result": {"content": [{"text": "0.6965784284662088", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":2.718281828459045}", "result": {"content": [{"text": "4.8283137373023015", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-4.8283137373023015", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1e15}", "result": {"content": [{"text": "0.13979400086720378", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1e-300}", "result": {"content": [{"text": "-0.0069897000433601884", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1e308}", "result": {"content": [{"text": "0.006808149392883301", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.00680252371549032", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":5e-324}", "result": {"content": [{"text": "-0.006485832667283136", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":8}", "result": {"content": [{"text": "2.3219280948873626", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":81}", "result": {"content": [{"text": "1.0987301405384453", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":243}", "result": {"content": [{"text": "0.8789841124307564", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":125}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":25}", "result": {"content": [{"text": "1.5000000000000002", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":0.5}", "result": {"content": [{"text": "-6.965784284662088", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":7}", "result": {"content": [{"text": "2.4812624260407485", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":10}", "result": {"content": [{"text": "2.0969100130080562", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":3}", "result": {"content": [{"text": "4.394920562153781", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":125,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":2}", "result": {"content": [{"text": "4.643856189774724", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":2.25}", "result": {"content": [{"text": "3.9693622959161177", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":144}", "result": {"content": [{"text": "0.647685462377997", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1000}", "result": {"content": [{"text": "0.4659800028906792", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":0.01}", "result": {"content": [{"text": "-0.6989700043360189", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1024}", "result": {"content": [{"text": "0.46438561897747244", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":2.718281828459045}", "result": {"content": [{"text": "3.2188758248682006", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-3.2188758248682006", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1e15}", "result": {"content": [{"text": "0.09319600057813583", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1e-300}", "result": {"content": [{"text": "-0.004659800028906792", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1e308}", "result": {"content": [{"text": "0.0045387662619222", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.004535015810326879", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":5e-324}", "result": {"content": [{"text": "-0.004323888444855423", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":8}", "result": {"content": [{"text": "1.5479520632582415", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":81}", "result": {"content": [{"text": "0.7324867603589634", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":243}", "result": {"content": [{"text": "0.5859894082871708", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":125}", "result": {"content": [{"text": "0.6666666666666666", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":25}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":0.5}", "result": {"content": [{"text": "-4.643856189774724", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":7}", "result": {"content": [{"text": "1.6541749506938324", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":10}", "result": {"content": [{"text": "1.3979400086720375", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":3}", "result": {"content": [{"text": "2.9299470414358537", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":25,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":2}", "result": {"content": [{"text": "-1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":2.25}", "result": {"content": [{"text": "-0.8547556456757274", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":144}", "result": {"content": [{"text": "-0.1394714728255649", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1000}", "result": {"content": [{"text": "-0.10034333188799373", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":0.01}", "result": {"content": [{"text": "0.1505149978319906", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1024}", "result": {"content": [{"text": "-0.09999999999999999", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":2.718281828459045}", "result": {"content": [{"text": "-0.6931471805599453", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":0.36787944117144233}", "result": {"content": [{"text": "0.6931471805599453", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1e15}", "result": {"content": [{"text": "-0.020068666377598746", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1e-300}", "result": {"content": [{"text": "0.0010034333188799374", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1e308}", "result": {"content": [{"text": "-9.773701157921467E-4", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "-9.765625E-4", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":5e-324}", "result": {"content": [{"text": "9.31098696461825E-4", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":8}", "result": {"content": [{"text": "-0.33333333333333337", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":81}", "result": {"content": [{"text": "-0.15773243839286435", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":243}", "result": {"content": [{"text": "-0.12618595071429148", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":125}", "result": {"content": [{"text": "-0.143558852691131", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":25}", "result": {"content": [{"text": "-0.21533827903669653", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":0.5}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":7}", "result": {"content": [{"text": "-0.3562071871080222", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":10}", "result": {"content": [{"text": "-0.30102999566398114", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":3}", "result": {"content": [{"text": "-0.6309297535714574", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":0.5,\"base\":1e400}", "result": {"content": [{"text": "-0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":2}", "result": {"content": [{"text": "2.807354922057604", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":2.25}", "result": {"content": [{"text": "2.3996024690442788", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":144}", "result": {"content": [{"text": "0.391545925723473", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1000}", "result": {"content": [{"text": "0.28169934667141894", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":0.01}", "result": {"content": [{"text": "-0.42254902000712846", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1024}", "result": {"content": [{"text": "0.2807354922057604", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":2.718281828459045}", "result": {"content": [{"text": "1.9459101490553132", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-1.9459101490553132", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1e15}", "result": {"content": [{"text": "0.05633986933428379", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1e-300}", "result": {"content": [{"text": "-0.0028169934667141893", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1e308}", "result": {"content": [{"text": "0.0027438248052410936", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.002741557541071879", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":5e-324}", "result": {"content": [{"text": "-0.0026139245084335233", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":8}", "result": {"content": [{"text": "0.9357849740192015", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":81}", "result": {"content": [{"text": "0.44281093729035553", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":243}", "result": {"content": [{"text": "0.35424874983228444", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":125}", "result": {"content": [{"text": "0.40302065170738915", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":25}", "result": {"content": [{"text": "0.6045309775610838", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":0.5}", "result": {"content": [{"text": "-2.807354922057604", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":7}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":10}", "result": {"content": [{"text": "0.8450980400142567", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":3}", "result": {"content": [{"text": "1.7712437491614221", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":7,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":2}", "result": {"content": [{"text": "3.3219280948873626", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":2.25}", "result": {"content": [{"text": "2.8394367936337868", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":144}", "result": {"content": [{"text": "0.46331420401456347", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1000}", "result": {"content": [{"text": "0.33333333333333337", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":0.01}", "result": {"content": [{"text": "-0.5000000000000001", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1024}", "result": {"content": [{"text": "0.33219280948873625", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":2.718281828459045}", "result": {"content": [{"text": "2.302585092994046", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-2.302585092994046", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1e15}", "result": {"content": [{"text": "0.06666666666666668", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1e-300}", "result": {"content": [{"text": "-0.0033333333333333335", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1e308}", "result": {"content": [{"text": "0.003246753246753247", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.00324407040516344", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":5e-324}", "result": {"content": [{"text": "-0.0030930429188895372", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":8}", "result": {"content": [{"text": "1.1073093649624544", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":81}", "result": {"content": [{"text": "0.5239758185723462", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":243}", "result": {"content": [{"text": "0.419180654857877", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":125}", "result": {"content": [{"text": "0.47689218602446437", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":25}", "result": {"content": [{"text": "0.7153382790366967", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":0.5}", "result": {"content": [{"text": "-3.3219280948873626", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":7}", "result": {"content": [{"text": "1.1832946624549385", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":10}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":3}", "result": {"content": [{"text": "2.095903274289385", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":10,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":2}", "result": {"content": [{"text": "1.5849625007211563", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":2.25}", "result": {"content": [{"text": "1.3547556456757275", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":144}", "result": {"content": [{"text": "0.22105705434887016", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1000}", "result": {"content": [{"text": "0.1590404182398875", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":0.01}", "result": {"content": [{"text": "-0.23856062735983127", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1024}", "result": {"content": [{"text": "0.15849625007211562", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":2.718281828459045}", "result": {"content": [{"text": "1.0986122886681098", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":0.36787944117144233}", "result": {"content": [{"text": "-1.0986122886681098", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1e15}", "result": {"content": [{"text": "0.0318080836479775", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1e-300}", "result": {"content": [{"text": "-0.001590404182398875", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1e308}", "result": {"content": [{"text": "0.001549094982856047", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "0.0015478149421105042", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":5e-324}", "result": {"content": [{"text": "-0.001475756518362343", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":8}", "result": {"content": [{"text": "0.5283208335737188", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":81}", "result": {"content": [{"text": "0.25", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":243}", "result": {"content": [{"text": "0.2", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":125}", "result": {"content": [{"text": "0.2275353981619951", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":25}", "result": {"content": [{"text": "0.3413030972429927", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":0.5}", "result": {"content": [{"text": "-1.5849625007211563", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":7}", "result": {"content": [{"text": "0.5645750340535797", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":10}", "result": {"content": [{"text": "0.47712125471966244", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":3}", "result": {"content": [{"text": "1.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":3,\"base\":1e400}", "result": {"content": [{"text": "0.0", "type": "text"}], "isError": false}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":-0.0}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":2}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":2.25}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":144}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1000}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":0.01}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1024}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":2.718281828459045}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":0.36787944117144233}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1e15}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1e-300}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1e308}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1.7976931348623157e308}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":5e-324}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":-1}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":-4}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":-0.001}", "result": {"content": [{"text": "Logarithm base must be > 0 and not 1\nLogarithm base must be > 0 and not 1", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":8}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":81}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":243}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":125}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":25}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":0.5}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":7}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":10}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":3}", "result": {"content": [{"text": "Result is too large\nResult is too large", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1e400,\"base\":1e400}", "result": {"content": [{"text": "Result is undefined\nResult is undefined", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{}", "result": {"content": [{"text": "Tool (sqrt) input validation failed: Validation failed: JSON schema validation errors: [: required property 'x' not found]", "type": "text"}], "isError": true}, "tool": "sqrt"}
+{"arguments": "{\"x\":\"4\"}", "result": {"content": [{"text": "Tool (sqrt) input validation failed: Validation failed: JSON schema validation errors: [/x: string found, number expected]", "type": "text"}], "isError": true}, "tool": "sqrt"}
+{"arguments": "{\"x\":8}", "result": {"content": [{"text": "Tool (log) input validation failed: Validation failed: JSON schema validation errors: [: required property 'base' not found]", "type": "text"}], "isError": true}, "tool": "log"}
+{"arguments": "{\"x\":1}", "error": {"code": -32602, "data": "Tool not found: nosuch", "message": "Unknown tool: invalid_tool_name"}, "tool": "nosuch"}
