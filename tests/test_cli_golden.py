@@ -108,8 +108,18 @@ def test_matches_java_runs_observed_after_capture(
     _check(client, {"args": args, "stdout": stdout, "stderr": java_stderr, "exit": status})
 
 
-def test_an_option_without_a_name_fails_like_spring() -> None:
-    """Java: Spring reports "Invalid argument syntax: --=x" and exits 1."""
-    done = _run("calculator-mcp-client", ["--=x", "add", "1", "2"])
+@pytest.mark.parametrize(
+    ("client", "args"),
+    [
+        ("calculator-mcp-client", ["--=x", "add", "1", "2"]),
+        ("scientific-calculator-mcp-client", ["--=x", "sqrt", "4"]),
+        ("calculator-router-client", ["--=x", "sqrt", "4"]),
+    ],
+)
+def test_an_option_without_a_name_fails_like_spring(client: str, args: list[str]) -> None:
+    """Java: Spring prints "Application run failed … Invalid argument syntax: --=x" (with a
+    timestamp, on stdout) and exits 1; the port prints one line on stderr and exits 1. Not in
+    the golden capture, which could never match that output."""
+    done = _run(client, args)
     assert (done.returncode, done.stdout) == (1, "")
-    assert "Invalid argument syntax: --=x" in done.stderr
+    assert done.stderr == "Error: Invalid argument syntax: --=x\n"

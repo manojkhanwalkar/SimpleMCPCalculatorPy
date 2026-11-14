@@ -18,6 +18,9 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 
+# "--=x" is left out on purpose: Spring prints a timestamped start-up failure on stdout
+# (exit 1) where the port prints one line on stderr; tests/test_cli_golden.py checks it.
+
 # Number spellings where Java's Double.parseDouble and Python's float() disagree.
 ODD_NUMBERS = [
     "1d",
@@ -67,7 +70,6 @@ CASES: dict[str, list[list[str]]] = {
         *[["parity", n] for n in ODD_NUMBERS],
         ["add", "7", "5", "--"],
         ["add", "--", "7", "5"],
-        ["--=x", "add", "1", "2"],
         ["add", "0x1p2000", "1"],
     ],
     SCIENTIFIC_CLIENT: [
@@ -113,7 +115,6 @@ CASES: dict[str, list[list[str]]] = {
         *[["sqrt", n] for n in ODD_NUMBERS],
         ["log", "--", "1024", "2"],
         ["--", "log", "1024", "2"],
-        ["--=x", "sqrt", "4"],
     ],
 }
 

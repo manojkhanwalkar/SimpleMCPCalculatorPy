@@ -4,6 +4,7 @@ import subprocess
 import sys
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import pytest
 from mcp import types
@@ -103,8 +104,9 @@ def _router(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def test_the_router_cli_refuses_a_tool_offered_twice() -> None:
-    """Java fails to start (IllegalStateException in CalculatorRouter); the port prints the
-    same message as one error line and exits 1."""
+    """Java's router fails to start (IllegalStateException in CalculatorRouter): Spring prints
+    a stack trace on stdout and the process then hangs. The port prints the same message as
+    one error line on stderr and exits 1 (a deliberate improvement)."""
     twice = (
         f"--calculator.server.command={sys.executable} -m simple_mcp_calculator.scientific_server"
     )
@@ -123,3 +125,39 @@ def test_a_bare_double_dash_ends_the_options(args: tuple[str, ...]) -> None:
     """Spring's rule, as the Java clients follow it."""
     done = _router(*args)
     assert (done.returncode, done.stdout, done.stderr) == (0, "10.0\n", "")
+
+
+PAGING_SERVER = Path(__file__).with_name("paging_server.py")
+
+
+def _paging(mode: str) -> str:
+    return f"--calculator.server.command={sys.executable} {PAGING_SERVER} {mode}"
+
+
+def test_tools_on_later_pages_are_routed() -> None:
+    """Java's listTools() follows nextCursor; a tool on page 2 must be routable."""
+    done = _router(_paging("two-pages"), "cube", "2")
+    assert (done.returncode, done.stdout, done.stderr) == (0, "8.0\n", "")
+
+
+def test_the_client_demo_lists_tools_from_every_page() -> None:
+    done = subprocess.run(  # noqa: S603 - fixed test command
+        [sys.executable, "-m", "simple_mcp_calculator.calculator_client", _paging("two-pages")],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+    )
+    assert done.stdout.splitlines()[0] == "Tools offered by the server: cube"
+
+
+@pytest.mark.parametrize(
+    ("mode", "message"),
+    [
+        ("repeat", "Error: paging-server repeated tools/list cursor 'same'\n"),
+        ("endless", "Error: paging-server has more than 100 pages of tools\n"),
+    ],
+)
+def test_a_tool_list_that_never_ends_is_an_error(mode: str, message: str) -> None:
+    done = _router(_paging(mode), "cube", "2")
+    assert (done.returncode, done.stdout, done.stderr) == (1, "", message)
