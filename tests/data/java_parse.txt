@@ -73,3 +73,11 @@
 "017" 4031000000000000
 "1e05" 40f86a0000000000
 "00.5" 3fe0000000000000
+"0x1p1024" 7ff0000000000000
+"-0x1p1024" fff0000000000000
+"0x1p2000" 7ff0000000000000
+"0x1.fffffffffffff8p1023" 7ff0000000000000
+"0x1.fffffffffffff7p1023" 7fefffffffffffff
+"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffp0" 7ff0000000000000
+"0x1p-1080" 0
+"-0x1p-2000" 8000000000000000

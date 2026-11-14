@@ -28,7 +28,13 @@ def java_parse_double(text: str) -> float:
         return math.nan
     if match["special"] == "Infinity":
         return -math.inf if negative else math.inf
-    value = float.fromhex(match["hex"]) if match["hex"] else float(match["dec"])
+    if match["hex"]:
+        try:
+            value = float.fromhex(match["hex"])
+        except OverflowError:  # Java rounds a hex value beyond the double range to Infinity
+            value = math.inf
+    else:
+        value = float(match["dec"])
     return -value if negative else value
 
 

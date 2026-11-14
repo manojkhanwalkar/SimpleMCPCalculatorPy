@@ -69,3 +69,39 @@ def test_scientific_client_matches_java(case: dict[str, Any]) -> None:
 def test_golden_file_covers_both_clients() -> None:
     assert len(CALCULATOR) > 30
     assert len(SCIENTIFIC) > 20
+
+
+# Observed on the Java client jars after cli.json was captured (independent review of #8):
+# Spring ends option parsing at a bare "--", and Java parses an oversized hex float as
+# Infinity, which the client then sends as the string "Infinity".
+_ADD_INFINITY = (
+    "Error: Tool (add) input validation failed: Validation failed: "
+    "JSON schema validation errors: [/a: string found, number expected]\n"
+)
+_SCIENTIFIC_USAGE = next(c["stderr"] for c in SCIENTIFIC if c["args"] == ["sqrt", "abc"])
+OBSERVED = [
+    ("calculator-mcp-client", ["add", "7", "5", "--"], "12.0\n", "", 0),
+    ("calculator-mcp-client", ["add", "--", "7", "5"], "12.0\n", "", 0),
+    ("calculator-mcp-client", ["add", "0x1p2000", "1"], _ADD_INFINITY, "", 1),
+    ("scientific-calculator-mcp-client", ["sqrt", "4", "--"], "2.0\n", "", 0),
+    ("scientific-calculator-mcp-client", ["log", "--", "8", "2"], "3.0\n", "", 0),
+    ("scientific-calculator-mcp-client", ["sqrt", "0x1p2000"], "", _SCIENTIFIC_USAGE, 1),
+]
+
+
+@pytest.mark.parametrize(
+    ("client", "args", "stdout", "java_stderr", "status"),
+    OBSERVED,
+    ids=[" ".join(o[1]) for o in OBSERVED],
+)
+def test_matches_java_runs_observed_after_capture(
+    client: str, args: list[str], stdout: str, java_stderr: str, status: int
+) -> None:
+    _check(client, {"args": args, "stdout": stdout, "stderr": java_stderr, "exit": status})
+
+
+def test_an_option_without_a_name_fails_like_spring() -> None:
+    """Java: Spring reports "Invalid argument syntax: --=x" and exits 1."""
+    done = _run("calculator-mcp-client", ["--=x", "add", "1", "2"])
+    assert (done.returncode, done.stdout) == (1, "")
+    assert "Invalid argument syntax: --=x" in done.stderr

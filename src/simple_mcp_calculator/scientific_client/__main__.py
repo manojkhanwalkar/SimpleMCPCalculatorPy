@@ -18,6 +18,7 @@ from simple_mcp_calculator.common.mcp_call import (
     Connection,
     ServerCommand,
     connect,
+    emit,
     run_client,
 )
 
@@ -50,14 +51,14 @@ def is_finite_number(text: str) -> bool:
 
 
 async def _demo(calculator: ScientificCalculatorClient) -> None:
-    print("Tools offered by the server: " + ", ".join(await calculator.list_operations()))
-    print(f"{'sqrt':<5} 144     = {await calculator.calculate('sqrt', 144)}")
-    print(f"{'sqrt':<5} 2       = {await calculator.calculate('sqrt', 2)}")
-    print(f"{'log10':<5} 1000    = {await calculator.calculate('log10', 1000)}")
-    print(f"{'log':<5} 1024, 2 = {await calculator.calculate('log', 1024, 2)}")
-    print(f"{'ln':<5} 10      = {await calculator.calculate('ln', 10)}")
-    print(f"{'sqrt':<5} -4      = {await calculator.calculate('sqrt', -4)}")
-    print(f"{'ln':<5} 0       = {await calculator.calculate('ln', 0)}")
+    emit("Tools offered by the server: " + ", ".join(await calculator.list_operations()))
+    emit(f"{'sqrt':<5} 144     = {await calculator.calculate('sqrt', 144)}")
+    emit(f"{'sqrt':<5} 2       = {await calculator.calculate('sqrt', 2)}")
+    emit(f"{'log10':<5} 1000    = {await calculator.calculate('log10', 1000)}")
+    emit(f"{'log':<5} 1024, 2 = {await calculator.calculate('log', 1024, 2)}")
+    emit(f"{'ln':<5} 10      = {await calculator.calculate('ln', 10)}")
+    emit(f"{'sqrt':<5} -4      = {await calculator.calculate('sqrt', -4)}")
+    emit(f"{'ln':<5} 0       = {await calculator.calculate('ln', 0)}")
 
 
 async def run(argv: Sequence[str]) -> int:
@@ -77,12 +78,12 @@ async def run(argv: Sequence[str]) -> int:
             or len(operands) != expected
             or not all(is_finite_number(o) for o in operands)
         ):
-            print(USAGE, file=sys.stderr)
-            print("Operations: " + ", ".join(operations), file=sys.stderr)
+            emit(USAGE, sys.stderr)
+            emit("Operations: " + ", ".join(operations), sys.stderr)
             return 1
         values = [java_parse_double(o) for o in operands]
         result = await calculator.calculate(operation, *values)
-        print(result)
+        emit(result)
         return 1 if result.startswith("Error:") else 0
 
 

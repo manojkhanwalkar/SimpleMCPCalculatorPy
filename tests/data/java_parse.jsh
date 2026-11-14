@@ -7,7 +7,8 @@ String[] inputs = {
   "+Infinity", "infinity", "Inf", "NaNd", "Infinityf", "0x1p3", "0X1P3", "0x1.8p1", "0x.8p1", "0x1p", "0x10",
   "0x1p3d", "-0x1p-1074", "0x1.fffffffffffffp1023", "1_000", "1,5", "1.5.5", "--1", "+-1", "", " ", "abc",
   "12345678901234567890123", "0.1", "123456789.123", "9007199254740993", "1e308", "1.7976931348623159e308",
-  "\u0661", "１", "0b101", "017", "1e05", "00.5"
+  "\u0661", "１", "0b101", "017", "1e05", "00.5",
+  "0x1p1024", "-0x1p1024", "0x1p2000", "0x1.fffffffffffff8p1023", "0x1.fffffffffffff7p1023", "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffp0", "0x1p-1080", "-0x1p-2000"
 };
 var sb = new StringBuilder();
 for (String s : inputs) {

@@ -17,6 +17,7 @@ from simple_mcp_calculator.common.mcp_call import (
     Connection,
     ServerCommand,
     connect,
+    emit,
     jackson_number,
     run_client,
 )
@@ -45,13 +46,13 @@ class CalculatorClient:
 
 
 async def _demo(calculator: CalculatorClient) -> None:
-    print("Tools offered by the server: " + ", ".join(await calculator.list_operations()))
+    emit("Tools offered by the server: " + ", ".join(await calculator.list_operations()))
     for op in ("add", "subtract", "multiply", "divide", "remainder", "exponent"):
-        print(f"{op:<9} 17, 5 = {await calculator.calculate(op, 17, 5)}")
-    print(f"{'divide':<9} 1, 0  = {await calculator.calculate('divide', 1, 0)}")
+        emit(f"{op:<9} 17, 5 = {await calculator.calculate(op, 17, 5)}")
+    emit(f"{'divide':<9} 1, 0  = {await calculator.calculate('divide', 1, 0)}")
     for op in ("factorial", "isPrime", "parity"):
-        print(f"{op:<9} 17    = {await calculator.calculate(op, 17)}")
-    print(f"{'factorial':<9} 2.5   = {await calculator.calculate('factorial', 2.5)}")
+        emit(f"{op:<9} 17    = {await calculator.calculate(op, 17)}")
+    emit(f"{'factorial':<9} 2.5   = {await calculator.calculate('factorial', 2.5)}")
 
 
 async def run(argv: Sequence[str]) -> int:
@@ -70,10 +71,10 @@ async def run(argv: Sequence[str]) -> int:
         elif len(ops) == 2 and is_java_double(ops[1]):
             result = await calculator.calculate(ops[0], java_parse_double(ops[1]))
         else:
-            print(USAGE, file=sys.stderr)
-            print("Operations: " + ", ".join(await calculator.list_operations()), file=sys.stderr)
+            emit(USAGE, sys.stderr)
+            emit("Operations: " + ", ".join(await calculator.list_operations()), sys.stderr)
             return 1
-        print(result)
+        emit(result)
         return 1 if result.startswith("Error:") else 0
 
 

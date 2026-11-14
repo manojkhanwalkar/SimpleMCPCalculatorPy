@@ -65,6 +65,10 @@ CASES: dict[str, list[list[str]]] = {
         ["add", "abc"],
         *[["add", n, "1"] for n in ODD_NUMBERS],
         *[["parity", n] for n in ODD_NUMBERS],
+        ["add", "7", "5", "--"],
+        ["add", "--", "7", "5"],
+        ["--=x", "add", "1", "2"],
+        ["add", "0x1p2000", "1"],
     ],
     SCIENTIFIC_CLIENT: [
         [],
@@ -83,6 +87,9 @@ CASES: dict[str, list[list[str]]] = {
         ["cube_root", "8"],
         ["sqrt", "abc"],
         *[["sqrt", n] for n in ODD_NUMBERS],
+        ["sqrt", "4", "--"],
+        ["log", "--", "8", "2"],
+        ["sqrt", "0x1p2000"],
     ],
     "calculator-router-client/target/calculator-router-client.jar": [
         [],
