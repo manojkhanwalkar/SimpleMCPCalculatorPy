@@ -328,3 +328,15 @@ def _find_abort(error: BaseException) -> bool:
     if isinstance(error, _Abort):
         return True
     return isinstance(error, BaseExceptionGroup) and any(map(_find_abort, error.exceptions))
+
+
+def test_error_lines_from_server_text_are_terminal_safe(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Error lines can carry server-controlled text (tool or server names, a server's stderr)."""
+    tty = _Stream(tty=True)
+    monkeypatch.setattr(sys, "stderr", tty)
+
+    async def hostile(_argv: Sequence[str]) -> int:
+        raise ValueError("Tool '\x1b[2Jx' is offered by both a and b")
+
+    assert run_client(hostile, []) == 1
+    assert tty.getvalue() == "Error: Tool '\ufffd[2Jx' is offered by both a and b\n"

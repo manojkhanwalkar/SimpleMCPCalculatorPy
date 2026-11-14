@@ -31,6 +31,9 @@ EXIT_TERMINATED = 143
 
 _STDERR_TAIL_BYTES = 4096
 
+MAX_TOOL_PAGES = 100
+"""Upper bound on tools/list pages read from one server."""
+
 
 @dataclass(frozen=True, slots=True)
 class Arguments:
@@ -147,7 +150,23 @@ class Connection:
     server_name: str
 
     async def list_tools(self) -> list[types.Tool]:
-        return (await self.session.list_tools()).tools
+        """Every tool the server offers, following ``nextCursor`` across pages as Java's
+        ``listTools()`` does. A server whose list never ends (more than ``MAX_TOOL_PAGES``
+        pages, or a cursor it has already given) is an error, not an endless loop."""
+        tools: list[types.Tool] = []
+        cursor: str | None = None
+        seen: set[str] = set()
+        for _ in range(MAX_TOOL_PAGES):
+            params = None if cursor is None else types.PaginatedRequestParams(cursor=cursor)
+            page = await self.session.list_tools(params=params)
+            tools.extend(page.tools)
+            cursor = page.next_cursor
+            if cursor is None:
+                return tools
+            if cursor in seen:
+                raise ValueError(f"{self.server_name} repeated tools/list cursor {cursor!r}")
+            seen.add(cursor)
+        raise ValueError(f"{self.server_name} has more than {MAX_TOOL_PAGES} pages of tools")
 
     async def call(self, name: str, arguments: dict[str, Any]) -> str:
         """Call a tool and return its text, or ``Error: <message>`` if the tool reported an
@@ -283,7 +302,7 @@ def run_client(run: Callable[[Sequence[str]], Awaitable[int]], argv: Sequence[st
         if not isinstance(e, Exception):
             raise
         if (start := _find(e, ServerStartError)) is not None:
-            print(f"Error: Cannot start the server: {start}", file=sys.stderr)
+            emit(f"Error: Cannot start the server: {start}", sys.stderr)
         else:
-            print(error_line(_leaf(e)), file=sys.stderr)
+            emit(error_line(_leaf(e)), sys.stderr)
         return 1
