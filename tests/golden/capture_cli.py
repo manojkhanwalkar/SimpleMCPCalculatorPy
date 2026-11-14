@@ -111,6 +111,9 @@ CASES: dict[str, list[list[str]]] = {
         ["add"],
         ["add", "1", "abc"],
         *[["sqrt", n] for n in ODD_NUMBERS],
+        ["log", "--", "1024", "2"],
+        ["--", "log", "1024", "2"],
+        ["--=x", "sqrt", "4"],
     ],
 }
 

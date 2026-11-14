@@ -20,6 +20,7 @@ GOLDEN = json.loads((Path(__file__).parent / "golden" / "cli.json").read_text())
 MODULES = {
     "calculator-mcp-client": "simple_mcp_calculator.calculator_client",
     "scientific-calculator-mcp-client": "simple_mcp_calculator.scientific_client",
+    "calculator-router-client": "simple_mcp_calculator.router",
 }
 
 
@@ -54,6 +55,7 @@ def _ids(cases: list[dict[str, Any]]) -> list[str]:
 
 CALCULATOR = _cases("calculator-mcp-client")
 SCIENTIFIC = _cases("scientific-calculator-mcp-client")
+ROUTER = _cases("calculator-router-client")
 
 
 @pytest.mark.parametrize("case", CALCULATOR, ids=_ids(CALCULATOR))
@@ -66,9 +68,15 @@ def test_scientific_client_matches_java(case: dict[str, Any]) -> None:
     _check("scientific-calculator-mcp-client", case)
 
 
+@pytest.mark.parametrize("case", ROUTER, ids=_ids(ROUTER))
+def test_router_client_matches_java(case: dict[str, Any]) -> None:
+    _check("calculator-router-client", case)
+
+
 def test_golden_file_covers_both_clients() -> None:
     assert len(CALCULATOR) > 30
     assert len(SCIENTIFIC) > 20
+    assert len(ROUTER) > 25
 
 
 # Observed on the Java client jars after cli.json was captured (independent review of #8):
