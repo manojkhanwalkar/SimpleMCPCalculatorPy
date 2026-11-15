@@ -360,7 +360,13 @@ def run_server(spec: ServerSpec, argv: Sequence[str] | None = None) -> None:
     """A server's entry point: log to ``~/.calculator-mcp/<server name>.log`` (or
     ``--logging.file.name=``), then serve ``spec`` on stdio."""
     configure_logging(f"{spec.name}.log", sys.argv[1:] if argv is None else argv)
-    serve_stdio(spec)
+    try:
+        limits = Limits.from_env()
+    except ValueError as e:
+        # A misconfigured server says what is wrong in one line, not a traceback.
+        print(f"Error: {e}", file=sys.stderr)
+        raise SystemExit(1) from None
+    serve_stdio(spec, limits)
 
 
 def tools_by_name(tools: Sequence[Tool]) -> dict[str, Tool]:
