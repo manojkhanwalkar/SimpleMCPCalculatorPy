@@ -218,13 +218,23 @@ class StderrTail:
         return lines[-1] if lines else ""
 
 
+def _start_error(server: ServerCommand, tail: StderrTail, error: BaseException) -> ServerStartError:
+    tail.close()
+    cause = _leaf(error)
+    reason = first_line(str(cause)) or type(cause).__name__
+    if detail := tail.last_line():
+        reason = f"{reason} ({detail})"
+    return ServerStartError(f"{server.command}: {reason}")
+
+
 @asynccontextmanager
 async def connect(*servers: ServerCommand) -> AsyncIterator[list[Connection]]:
     """Start each server, initialize a session with it, and close them all on exit (which
-    stops the server processes). A failure to start or initialize is a ``ServerStartError``
-    carrying the server's last stderr line, if it wrote one."""
+    stops the server processes). The servers start one after another but their MCP handshakes
+    run concurrently, so the router waits for one server start rather than two. A failure to
+    start or initialize is a ``ServerStartError`` carrying the server's last stderr line."""
     async with AsyncExitStack() as stack:
-        connections = []
+        started: list[tuple[ServerCommand, StderrTail, ClientSession]] = []
         for server in servers:
             tail = StderrTail()
             stack.callback(tail.close)
@@ -236,16 +246,24 @@ async def connect(*servers: ServerCommand) -> AsyncIterator[list[Connection]]:
                 session = await stack.enter_async_context(
                     ClientSession(read, write, read_timeout_seconds=REQUEST_TIMEOUT_SECONDS)
                 )
-                init = await session.initialize()
             except Exception as e:
-                tail.close()
-                cause = _leaf(e)
-                reason = first_line(str(cause)) or type(cause).__name__
-                if detail := tail.last_line():
-                    reason = f"{reason} ({detail})"
-                raise ServerStartError(f"{server.command}: {reason}") from e
-            connections.append(Connection(session, init.server_info.name))
-        yield connections
+                raise _start_error(server, tail, e) from e
+            started.append((server, tail, session))
+
+        names: dict[int, str] = {}
+
+        async def initialize(
+            index: int, server: ServerCommand, tail: StderrTail, session: ClientSession
+        ) -> None:
+            try:
+                names[index] = (await session.initialize()).server_info.name
+            except Exception as e:
+                raise _start_error(server, tail, e) from e
+
+        async with anyio.create_task_group() as group:
+            for index, (server, tail, session) in enumerate(started):
+                group.start_soon(initialize, index, server, tail, session)
+        yield [Connection(session, names[i]) for i, (_, _, session) in enumerate(started)]
 
 
 def _leaf(error: BaseException) -> BaseException:

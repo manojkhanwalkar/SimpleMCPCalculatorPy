@@ -340,3 +340,16 @@ def test_error_lines_from_server_text_are_terminal_safe(monkeypatch: pytest.Monk
 
     assert run_client(hostile, []) == 1
     assert tty.getvalue() == "Error: Tool '\ufffd[2Jx' is offered by both a and b\n"
+
+
+async def test_servers_are_initialized_concurrently() -> None:
+    """Two servers that each take 3 s to answer initialize are ready in well under the 6 s a
+    one-after-another start would need (the router waits for one server start, not two)."""
+    slow = ServerCommand(
+        sys.executable, (str(Path(__file__).with_name("paging_server.py")), "slow")
+    )
+    started = time.monotonic()
+    async with connect(slow, slow) as connections:
+        elapsed = time.monotonic() - started
+        assert [c.server_name for c in connections] == ["paging-server", "paging-server"]
+    assert elapsed < 5.5
