@@ -5,6 +5,8 @@ Expected values are copied from responses captured from the Java servers (commit
 
 import logging
 import math
+import os
+import subprocess
 import sys
 import threading
 from pathlib import Path
@@ -385,7 +387,26 @@ def test_run_server_names_the_log_after_the_server(
     monkeypatch.setattr(
         ts, "configure_logging", lambda name, argv: calls.append((name, list(argv)))
     )
-    monkeypatch.setattr(ts, "serve_stdio", lambda s: calls.append((s.name, [])))
+    monkeypatch.setattr(ts, "serve_stdio", lambda s, _limits: calls.append((s.name, [])))
     monkeypatch.setattr(sys, "argv", ["prog", "--x=1"])
     ts.run_server(spec)
     assert calls == [(log_name, ["--x=1"]), (spec.name, [])]
+
+
+def test_a_malformed_limit_setting_is_one_error_line_and_status_1(tmp_path: Path) -> None:
+    done = subprocess.run(  # noqa: S603 - fixed test command
+        [
+            sys.executable, "-m", "simple_mcp_calculator.calculator_server",
+            f"--logging.file.name={tmp_path / 'server.log'}",
+        ],
+        input="",
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+        env={**os.environ, "CALCULATOR_MCP_RATE": "bogus"},
+    )  # fmt: skip
+    assert (done.returncode, done.stdout) == (1, "")
+    assert done.stderr == (
+        "Error: Invalid request limits: CALCULATOR_MCP_RATE must be a number, got 'bogus'\n"
+    )

@@ -48,7 +48,7 @@ This creates `.venv/` with the five commands above. Run them with `uv run <comma
 | `ln`, `log10` | `x` | natural and base-10 logarithm; error result unless `x > 0` |
 | `log` | `x`, `base` | logarithm of `x` in `base`; exact whole numbers for exact powers (`log 1000 10` is `3.0`) |
 
-Results are written as Java writes doubles (`22.0`, `1.0E21`). A result that overflows or is undefined (`exponent 10 400`, `exponent -8 0.5`) is an error result, not `Infinity` or `NaN`. Whole-number tools reject fractions and anything beyond 2^53. Every tool is read-only and idempotent.
+Results are written as Java writes doubles (`22.0`, `1.0E21`). A result that overflows or is undefined (`exponent 10 400`, `exponent -8 0.5`) is an error result, not `Infinity` or `NaN`. The one exception, as in Java: `remainder` of an infinite `a` (sent as `1e400`) returns `"NaN"`. Whole-number tools reject fractions and anything beyond 2^53. Every tool is read-only and idempotent.
 
 ## Use the clients
 
@@ -119,7 +119,7 @@ Then paste JSON-RPC lines:
 
 Stdout is the protocol channel, so the server logs to `~/.calculator-mcp/<server>.log` (owner-only, rolled at 10 MB, 7 kept). Override with `--logging.file.name=<path>`.
 
-Each server limits tool calls to 200 a second (burst 400) and 8 at once; over-limit calls get an error result. Set `CALCULATOR_MCP_RATE`, `CALCULATOR_MCP_BURST` and `CALCULATOR_MCP_MAX_CONCURRENT` to change that. A malformed value stops the server at start-up with a message that names the setting. Ctrl+C on a server started by hand stops it, with exit status 130, once stdin has a line or closes.
+Each server limits tool calls to 200 a second (burst 400) and 8 at once; over-limit calls get an error result. Set `CALCULATOR_MCP_RATE`, `CALCULATOR_MCP_BURST` and `CALCULATOR_MCP_MAX_CONCURRENT` in **the server's own environment** to change that: for example in the `env` of a Claude Desktop server entry. Setting them where you run one of the clients has no effect (see below). A malformed value stops the server at start-up with one line, `Error: Invalid request limits: …`, and exit status 1. Ctrl+C on a server started by hand stops it, with exit status 130, once stdin has a line or closes.
 
 ## Use the servers from Claude Code or Claude Desktop
 
@@ -147,7 +147,7 @@ For Claude Desktop, add to `claude_desktop_config.json`:
 
 ## Differences from the Java version
 
-These are deliberate. The design doc explains each one.
+These are deliberate. The [design doc](https://claude.ai/artifact/PSoGdkgiSTdJsUwGLjuT8m) explains each one.
 
 - **Annotations:** the basic calculator's tools are annotated read-only, idempotent and closed-world, like the scientific tools. Java sends Spring's defaults (destructive, open-world).
 - **Request limits:** the servers have a token bucket and a concurrency cap. Java has none.
@@ -158,11 +158,22 @@ These are deliberate. The design doc explains each one.
 - **Failures in the clients** are one line on stderr with exit status 1. Java's clients instead print a Spring Boot start-up failure, and for a missing server jar or a tool offered by two servers, they print a stack trace on stdout and then hang.
 - **Signals:** Ctrl+C exits 130 and SIGTERM 143, after the servers are shut down.
 - **Terminal output:** control characters in server text are neutralised on a terminal.
+- **Servers started by a client** get the MCP SDK's minimal environment (`HOME`, `PATH`, `SHELL`, `TERM`, `USER`, `LOGNAME`), not the client's. So `CALCULATOR_MCP_*` set for a client never reaches its servers, and `JAVA_HOME` or `JAVA_TOOL_OPTIONS` never reaches a server started with `--….server.jar`.
+- **MCP client name:** the clients introduce themselves to servers with the Python SDK's default `clientInfo` name, not `calculator-mcp-client` and so on.
+- **Log file:** a symlink (or anything that isn't a regular file) at the log path is refused, and the server logs to a fresh private temp directory instead.
 - **Protocol errors** that the SDK raises (an unknown method, a malformed request) use the Python MCP SDK's wording. `NaN` and `Infinity` literals in a request are accepted, while Java's server dies on them.
 
 ## Speed
 
-On an 8-core x86-64 machine, a server answers `initialize` in about 2.5 s, against 6.6 s (calculator) and 11.8 s (scientific) for the Java servers. A router call such as `calculator-router-client sqrt 2`, which starts both servers, takes about 9.6 s against 30.6 s in Java.
+The Python servers start about 4.5 times faster than the Java ones, and a router call takes about a quarter of the time.
+
+| Measurement | Python | Java |
+|---|---|---|
+| Calculator server: launch until it answers `initialize` | 1.3 s | 5.9 s (5.5–6.1) |
+| Scientific server: launch until it answers `initialize` | 1.3 s (1.2–1.3) | 5.7 s (5.6–6.8) |
+| `calculator-router-client sqrt 2`, which starts both servers | 5.1 s (5.0–5.1) | 18.8 s (18.6–19.8) |
+
+The servers were launched directly (`.venv/bin/python -m …` and `java -jar …`, not through `uv run`), and the router through its console script and its jar. Each figure is the median of 9 runs (5 for the router), with the range in brackets, on an otherwise idle 8-core x86-64 Linux machine (1-minute load below 1.0 at the start) with Python 3.14 and Java 26. Your figures will differ; the ratios are the point.
 
 ## Compliance
 
@@ -171,19 +182,20 @@ The calculators handle numbers only: no personal, payment or financial data, no 
 ## Development
 
 ```bash
-uv run pytest        # tests, with a 95% coverage gate
-uv run ruff check .  # lint
-uv run mypy          # strict type check
+uv run pytest                 # tests, with a 95% coverage gate
+uv run ruff check .           # lint
+uv run ruff format --check .  # formatting
+uv run mypy                   # strict type check
 ```
 
-The golden tests compare the servers and clients with responses captured from the Java project. To capture them again, build the Java project (`./mvnw package`) and run:
+The golden tests compare the servers and clients with responses captured from the Java project. To capture them again, you need Java 25 or newer: build the Java project (`./mvnw package`), then run:
 
 ```bash
 python -I tests/golden/capture.py /path/to/SimpleMCPCalculator      # servers
 python -I tests/golden/capture_cli.py /path/to/SimpleMCPCalculator  # command-line clients (about 30 min)
 ```
 
-With a built Java project, the cross-language tests also run the Python clients against the Java servers:
+With a built Java project, the cross-language tests also run the Python clients against the Java servers, and the Java clients against the Python servers:
 
 ```bash
 SIMPLE_MCP_CALCULATOR_JAVA=/path/to/SimpleMCPCalculator uv run pytest tests/test_cross_language.py
