@@ -8,11 +8,10 @@
 ``--scientific.server.command=…``). Exits with 1 on bad usage or when the server reports an error.
 """
 
-import math
 import sys
 from collections.abc import Sequence
 
-from simple_mcp_calculator.common.javaparse import java_parse_double
+from simple_mcp_calculator.common.javaparse import is_finite_java_double, java_parse_double
 from simple_mcp_calculator.common.mcp_call import (
     Arguments,
     Connection,
@@ -34,20 +33,11 @@ class ScientificCalculatorClient:
         self._connection = connection
 
     async def list_operations(self) -> list[str]:
-        return [t.name for t in await self._connection.list_tools()]
+        return await self._connection.tool_names()
 
     async def calculate(self, operation: str, x: float, base: float | None = None) -> str:
         arguments = {"x": x} if base is None else {"x": x, "base": base}
         return await self._connection.call(operation, arguments)
-
-
-def is_finite_number(text: str) -> bool:
-    """NaN and Infinity parse as doubles but can't be sent as JSON numbers, so they are
-    rejected here."""
-    try:
-        return math.isfinite(java_parse_double(text))
-    except ValueError:
-        return False
 
 
 async def _demo(calculator: ScientificCalculatorClient) -> None:
@@ -76,7 +66,7 @@ async def run(argv: Sequence[str]) -> int:
         if (
             operation not in operations
             or len(operands) != expected
-            or not all(is_finite_number(o) for o in operands)
+            or not all(is_finite_java_double(o) for o in operands)
         ):
             emit(USAGE, sys.stderr)
             emit("Operations: " + ", ".join(operations), sys.stderr)

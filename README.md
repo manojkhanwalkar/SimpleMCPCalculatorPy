@@ -165,13 +165,13 @@ These are deliberate. The [design doc](https://claude.ai/artifact/PSoGdkgiSTdJsU
 
 ## Speed
 
-The Python servers start about 4.5 times faster than the Java ones, and a router call takes about a quarter of the time.
+The Python servers start about 4.5 times faster than the Java ones, and a router call takes about a fifth of the time (the router starts its two servers' handshakes concurrently).
 
 | Measurement | Python | Java |
 |---|---|---|
 | Calculator server: launch until it answers `initialize` | 1.3 s | 5.9 s (5.5–6.1) |
 | Scientific server: launch until it answers `initialize` | 1.3 s (1.2–1.3) | 5.7 s (5.6–6.8) |
-| `calculator-router-client sqrt 2`, which starts both servers | 5.1 s (5.0–5.1) | 18.8 s (18.6–19.8) |
+| `calculator-router-client sqrt 2`, which starts both servers | 3.8 s (3.76–3.82) | 18.8 s (18.6–19.8) |
 
 The servers were launched directly (`.venv/bin/python -m …` and `java -jar …`, not through `uv run`), and the router through its console script and its jar. Each figure is the median of 9 runs (5 for the router), with the range in brackets, on an otherwise idle 8-core x86-64 Linux machine (1-minute load below 1.0 at the start) with Python 3.14 and Java 26. Your figures will differ; the ratios are the point.
 

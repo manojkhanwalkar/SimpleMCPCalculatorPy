@@ -168,6 +168,10 @@ class Connection:
             seen.add(cursor)
         raise ValueError(f"{self.server_name} has more than {MAX_TOOL_PAGES} pages of tools")
 
+    async def tool_names(self) -> list[str]:
+        """The names of the server's tools, in the order it lists them."""
+        return [t.name for t in await self.list_tools()]
+
     async def call(self, name: str, arguments: dict[str, Any]) -> str:
         """Call a tool and return its text, or ``Error: <message>`` if the tool reported an
         error or the request failed (an unknown tool, a timeout or a dead server)."""
