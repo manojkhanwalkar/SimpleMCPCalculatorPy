@@ -14,7 +14,7 @@ import sys
 import threading
 from collections.abc import AsyncIterator, Awaitable, Callable, Mapping, Sequence
 from contextlib import AsyncExitStack, asynccontextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, TextIO
 
 import anyio
@@ -78,6 +78,14 @@ class ServerCommand:
 
     command: str
     args: tuple[str, ...]
+    name: str = field(default="", compare=False)
+    """Which server this is (``calculator``, ``scientific``), for messages."""
+
+    @property
+    def label(self) -> str:
+        """``calculator (python -m …)``: names the server even when several share a program."""
+        command_line = shlex.join((self.command, *self.args))
+        return f"{self.name} ({command_line})" if self.name else command_line
 
     @classmethod
     def resolve(
@@ -92,10 +100,10 @@ class ServerCommand:
             words = shlex.split(command)
             if not words:
                 raise ValueError(f"--{name}.server.command= names no command")
-            return cls(words[0], tuple(words[1:]))
+            return cls(words[0], tuple(words[1:]), name)
         if jar := options.get(f"{name}.server.jar") or env.get(f"{name.upper()}_SERVER_JAR"):
-            return cls("java", ("-jar", jar))
-        return cls(sys.executable, ("-m", default_module))
+            return cls("java", ("-jar", jar), name)
+        return cls(sys.executable, ("-m", default_module), name)
 
 
 def jackson_number(x: float) -> float | str:
@@ -228,7 +236,7 @@ def _start_error(server: ServerCommand, tail: StderrTail, error: BaseException) 
     reason = first_line(str(cause)) or type(cause).__name__
     if detail := tail.last_line():
         reason = f"{reason} ({detail})"
-    return ServerStartError(f"{server.command}: {reason}")
+    return ServerStartError(f"{server.label}: {reason}")
 
 
 @asynccontextmanager

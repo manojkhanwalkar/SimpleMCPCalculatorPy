@@ -76,7 +76,7 @@ On success the result goes to stdout and the exit code is 0. Every failure exits
 
 - A server's error, an unknown operation or a wrong operand count prints `Error: …` on stdout.
 - Operands that aren't numbers print the usage line and the operation list on stderr.
-- A server that can't be started prints `Error: Cannot start the server: <reason>` on stderr, ending with the server's last stderr line if it wrote one.
+- A server that can't be started prints `Error: Cannot start the server: <name> (<command>): <reason>` on stderr (for example `calculator (java -jar calc.jar): …`), ending with the server's last stderr line if it wrote one. The Java clients print Spring Boot's startup failure report instead.
 - Any other failure, such as a malformed option, prints `Error: <message>` on stderr.
 
 Ctrl+C exits with 130 and SIGTERM with 143. In both cases the servers are shut down first.
