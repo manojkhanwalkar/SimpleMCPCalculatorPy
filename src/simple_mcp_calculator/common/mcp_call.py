@@ -236,7 +236,8 @@ async def connect(*servers: ServerCommand) -> AsyncIterator[list[Connection]]:
     """Start each server, initialize a session with it, and close them all on exit (which
     stops the server processes). The servers start one after another but their MCP handshakes
     run concurrently, so the router waits for one server start rather than two. A failure to
-    start or initialize is a ``ServerStartError`` carrying the server's last stderr line."""
+    start or initialize is a ``ServerStartError`` carrying the server's last stderr line; when
+    several fail, it is the first configured one's."""
     async with AsyncExitStack() as stack:
         started: list[tuple[ServerCommand, StderrTail, ClientSession]] = []
         for server in servers:
@@ -255,18 +256,30 @@ async def connect(*servers: ServerCommand) -> AsyncIterator[list[Connection]]:
             started.append((server, tail, session))
 
         names: dict[int, str] = {}
+        failures: dict[int, ServerStartError] = {}
+        scopes = [anyio.CancelScope() for _ in started]
 
         async def initialize(
             index: int, server: ServerCommand, tail: StderrTail, session: ClientSession
         ) -> None:
-            try:
-                names[index] = (await session.initialize()).server_info.name
-            except Exception as e:
-                raise _start_error(server, tail, e) from e
+            with scopes[index]:
+                try:
+                    names[index] = (await session.initialize()).server_info.name
+                except Exception as e:
+                    failure = _start_error(server, tail, e)
+                    failure.__cause__ = e
+                    failures[index] = failure
+                    # Like a one-after-another start (and the Java clients), the first
+                    # configured server that fails is the one reported: later handshakes are
+                    # abandoned, earlier ones run on (bounded by the request timeout).
+                    for later in scopes[index + 1 :]:
+                        later.cancel()
 
         async with anyio.create_task_group() as group:
             for index, (server, tail, session) in enumerate(started):
                 group.start_soon(initialize, index, server, tail, session)
+        if failures:
+            raise failures[min(failures)]
         yield [Connection(session, names[i]) for i, (_, _, session) in enumerate(started)]
 
 

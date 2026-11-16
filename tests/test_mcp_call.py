@@ -20,7 +20,9 @@ from simple_mcp_calculator.common.mcp_call import (
     Arguments,
     Connection,
     ServerCommand,
+    ServerStartError,
     StderrTail,
+    _find,
     connect,
     emit,
     error_line,
@@ -353,3 +355,42 @@ async def test_servers_are_initialized_concurrently() -> None:
         elapsed = time.monotonic() - started
         assert [c.server_name for c in connections] == ["paging-server", "paging-server"]
     assert elapsed < 5.5
+
+
+def _failing(delay: float, message: str) -> ServerCommand:
+    """A "server" that writes ``message`` to stderr after ``delay`` seconds and exits."""
+    script = f"import sys, time; time.sleep({delay}); sys.stderr.write({message!r} + '\\n')"
+    return ServerCommand(sys.executable, ("-c", script + "; sys.exit(2)"))
+
+
+async def _start_error_of(*servers: ServerCommand) -> str:
+    # Errors arrive wrapped in exception groups.
+    with pytest.raises(BaseException) as raised:  # noqa: PT011
+        async with connect(*servers):
+            pass
+    found = _find(raised.value, ServerStartError)
+    assert found is not None, repr(raised.value)
+    return str(found)
+
+
+async def test_when_several_servers_fail_the_first_configured_one_is_reported() -> None:
+    """Java starts its clients in order, so it reports the first server's failure even when a
+    later one fails sooner."""
+    message = await _start_error_of(_failing(1.0, "first broke"), _failing(0.0, "second broke"))
+    assert "(first broke)" in message
+
+
+async def test_a_later_server_failing_is_reported_when_the_earlier_ones_start() -> None:
+    slow = ServerCommand(
+        sys.executable, (str(Path(__file__).with_name("paging_server.py")), "slow")
+    )
+    message = await _start_error_of(slow, _failing(0.0, "second broke"))
+    assert "(second broke)" in message
+
+
+async def test_a_failing_first_server_abandons_the_later_handshakes() -> None:
+    slow = ServerCommand(
+        sys.executable, (str(Path(__file__).with_name("paging_server.py")), "slow")
+    )
+    message = await _start_error_of(_failing(0.0, "first broke"), slow)
+    assert "(first broke)" in message
