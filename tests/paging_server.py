@@ -1,6 +1,6 @@
 """A fake MCP server for client tests that returns its tool list in pages.
 
-Usage: python paging_server.py <mode>
+Usage: python paging_server.py <mode> [<pid file>]
   two-pages  page 1 is empty with a cursor; page 2 offers "cube" (x -> x^3)
   repeat     every page returns the same cursor
   endless    every page returns a new cursor
@@ -8,8 +8,10 @@ Usage: python paging_server.py <mode>
 """
 
 import json
+import os
 import sys
 import time
+from pathlib import Path
 
 CUBE = {
     "name": "cube",
@@ -39,6 +41,8 @@ def reply(message: dict[str, object], result: dict[str, object]) -> None:
 
 def main() -> None:
     mode = sys.argv[1]
+    if len(sys.argv) > 2:
+        Path(sys.argv[2]).write_text(str(os.getpid()))
     for line in sys.stdin:
         message = json.loads(line)
         method = message.get("method")

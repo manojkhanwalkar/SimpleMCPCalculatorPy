@@ -3,6 +3,7 @@
 import io
 import math
 import os
+import shlex
 import shutil
 import signal
 import subprocess
@@ -11,6 +12,7 @@ import time
 from collections.abc import Sequence
 from pathlib import Path
 
+import anyio
 import pytest
 from mcp import types
 
@@ -225,7 +227,7 @@ def test_a_server_that_cannot_start_is_one_error_line_and_status_1(
 def test_a_missing_jar_says_why() -> None:
     done = _client("--calculator.server.jar=/no/such.jar", "add", "1", "2")
     assert done.returncode == 1
-    assert "Error: Cannot start the server: java: " in done.stderr
+    assert "Error: Cannot start the server: calculator (java -jar /no/such.jar): " in done.stderr
     assert "/no/such.jar" in done.stderr
 
 
@@ -357,10 +359,10 @@ async def test_servers_are_initialized_concurrently() -> None:
     assert elapsed < 5.5
 
 
-def _failing(delay: float, message: str) -> ServerCommand:
+def _failing(delay: float, message: str, name: str = "") -> ServerCommand:
     """A "server" that writes ``message`` to stderr after ``delay`` seconds and exits."""
     script = f"import sys, time; time.sleep({delay}); sys.stderr.write({message!r} + '\\n')"
-    return ServerCommand(sys.executable, ("-c", script + "; sys.exit(2)"))
+    return ServerCommand(sys.executable, ("-c", script + "; sys.exit(2)"), name)
 
 
 async def _start_error_of(*servers: ServerCommand) -> str:
@@ -380,12 +382,34 @@ async def test_when_several_servers_fail_the_first_configured_one_is_reported() 
     assert "(first broke)" in message
 
 
-async def test_a_later_server_failing_is_reported_when_the_earlier_ones_start() -> None:
+async def test_a_later_server_failing_is_reported_by_name_and_nothing_is_left(
+    tmp_path: Path,
+) -> None:
+    """A later server fails while the first is still in its (3 s) handshake: the error names the
+    failing server (even though both run the same program) with its own stderr line, and the
+    slow server is shut down too."""
+    pid_file = tmp_path / "slow.pid"
     slow = ServerCommand(
-        sys.executable, (str(Path(__file__).with_name("paging_server.py")), "slow")
+        sys.executable,
+        (str(Path(__file__).with_name("paging_server.py")), "slow", str(pid_file)),
+        "slow",
     )
-    message = await _start_error_of(slow, _failing(0.0, "second broke"))
-    assert "(second broke)" in message
+    failing = _failing(0.0, "second broke", "failing")
+    message = await _start_error_of(slow, failing)
+    assert failing.label == f"failing ({shlex.join((sys.executable, *failing.args))})"
+    assert message.startswith(f"{failing.label}: ")
+    assert message.endswith("(second broke)")
+    assert "slow" not in message
+    pid = int(pid_file.read_text())
+    deadline = time.monotonic() + 10
+    while time.monotonic() < deadline:
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return
+        await anyio.sleep(0.1)
+    os.kill(pid, signal.SIGKILL)
+    pytest.fail("the slow server outlived the failed connect")
 
 
 async def test_a_failing_first_server_abandons_the_later_handshakes() -> None:
@@ -394,3 +418,9 @@ async def test_a_failing_first_server_abandons_the_later_handshakes() -> None:
     )
     message = await _start_error_of(_failing(0.0, "first broke"), slow)
     assert "(first broke)" in message
+
+
+def test_a_server_label_names_the_server_and_its_command() -> None:
+    command = ServerCommand.resolve("scientific", "pkg.sci", {})
+    assert command.label == f"scientific ({shlex.join((sys.executable, '-m', 'pkg.sci'))})"
+    assert ServerCommand("prog", ("a b",)).label == "prog 'a b'"
