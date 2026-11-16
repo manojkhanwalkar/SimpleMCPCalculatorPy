@@ -4,10 +4,12 @@ Usage: python paging_server.py <mode>
   two-pages  page 1 is empty with a cursor; page 2 offers "cube" (x -> x^3)
   repeat     every page returns the same cursor
   endless    every page returns a new cursor
+  slow       answers initialize after 3 seconds; offers no tools
 """
 
 import json
 import sys
+import time
 
 CUBE = {
     "name": "cube",
@@ -23,6 +25,8 @@ CUBE = {
 def tools_page(mode: str, cursor: str | None) -> dict[str, object]:
     if mode == "two-pages":
         return {"tools": [], "nextCursor": "p2"} if cursor is None else {"tools": [CUBE]}
+    if mode == "slow":
+        return {"tools": []}
     if mode == "repeat":
         return {"tools": [], "nextCursor": "same"}
     return {"tools": [], "nextCursor": f"p{int((cursor or 'p0')[1:]) + 1}"}
@@ -41,6 +45,8 @@ def main() -> None:
         params = message.get("params") or {}
         assert isinstance(params, dict)
         if method == "initialize":
+            if mode == "slow":
+                time.sleep(3)
             reply(
                 message,
                 {

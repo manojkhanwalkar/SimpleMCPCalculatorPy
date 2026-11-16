@@ -44,3 +44,12 @@ def is_java_double(text: str) -> bool:
     except ValueError:
         return False
     return True
+
+
+def is_finite_java_double(text: str) -> bool:
+    """A number the clients can send as a JSON number: Java-parseable and finite (NaN and
+    Infinity parse as doubles but have no JSON number form)."""
+    try:
+        return math.isfinite(java_parse_double(text))
+    except ValueError:
+        return False

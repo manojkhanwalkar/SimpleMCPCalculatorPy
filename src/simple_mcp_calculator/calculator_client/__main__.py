@@ -33,7 +33,7 @@ class CalculatorClient:
         self._connection = connection
 
     async def list_operations(self) -> list[str]:
-        return [t.name for t in await self._connection.list_tools()]
+        return await self._connection.tool_names()
 
     async def calculate(self, operation: str, a: float, b: float | None = None) -> str:
         # The Java client sends any parsed double, NaN and Infinity included, as Jackson writes it.

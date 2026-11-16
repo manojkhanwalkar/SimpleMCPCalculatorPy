@@ -168,6 +168,10 @@ class Connection:
             seen.add(cursor)
         raise ValueError(f"{self.server_name} has more than {MAX_TOOL_PAGES} pages of tools")
 
+    async def tool_names(self) -> list[str]:
+        """The names of the server's tools, in the order it lists them."""
+        return [t.name for t in await self.list_tools()]
+
     async def call(self, name: str, arguments: dict[str, Any]) -> str:
         """Call a tool and return its text, or ``Error: <message>`` if the tool reported an
         error or the request failed (an unknown tool, a timeout or a dead server)."""
@@ -218,13 +222,24 @@ class StderrTail:
         return lines[-1] if lines else ""
 
 
+def _start_error(server: ServerCommand, tail: StderrTail, error: BaseException) -> ServerStartError:
+    tail.close()
+    cause = _leaf(error)
+    reason = first_line(str(cause)) or type(cause).__name__
+    if detail := tail.last_line():
+        reason = f"{reason} ({detail})"
+    return ServerStartError(f"{server.command}: {reason}")
+
+
 @asynccontextmanager
 async def connect(*servers: ServerCommand) -> AsyncIterator[list[Connection]]:
     """Start each server, initialize a session with it, and close them all on exit (which
-    stops the server processes). A failure to start or initialize is a ``ServerStartError``
-    carrying the server's last stderr line, if it wrote one."""
+    stops the server processes). The servers start one after another but their MCP handshakes
+    run concurrently, so the router waits for one server start rather than two. A failure to
+    start or initialize is a ``ServerStartError`` carrying the server's last stderr line; when
+    several fail, it is the first configured one's."""
     async with AsyncExitStack() as stack:
-        connections = []
+        started: list[tuple[ServerCommand, StderrTail, ClientSession]] = []
         for server in servers:
             tail = StderrTail()
             stack.callback(tail.close)
@@ -236,16 +251,36 @@ async def connect(*servers: ServerCommand) -> AsyncIterator[list[Connection]]:
                 session = await stack.enter_async_context(
                     ClientSession(read, write, read_timeout_seconds=REQUEST_TIMEOUT_SECONDS)
                 )
-                init = await session.initialize()
             except Exception as e:
-                tail.close()
-                cause = _leaf(e)
-                reason = first_line(str(cause)) or type(cause).__name__
-                if detail := tail.last_line():
-                    reason = f"{reason} ({detail})"
-                raise ServerStartError(f"{server.command}: {reason}") from e
-            connections.append(Connection(session, init.server_info.name))
-        yield connections
+                raise _start_error(server, tail, e) from e
+            started.append((server, tail, session))
+
+        names: dict[int, str] = {}
+        failures: dict[int, ServerStartError] = {}
+        scopes = [anyio.CancelScope() for _ in started]
+
+        async def initialize(
+            index: int, server: ServerCommand, tail: StderrTail, session: ClientSession
+        ) -> None:
+            with scopes[index]:
+                try:
+                    names[index] = (await session.initialize()).server_info.name
+                except Exception as e:
+                    failure = _start_error(server, tail, e)
+                    failure.__cause__ = e
+                    failures[index] = failure
+                    # Like a one-after-another start (and the Java clients), the first
+                    # configured server that fails is the one reported: later handshakes are
+                    # abandoned, earlier ones run on (bounded by the request timeout).
+                    for later in scopes[index + 1 :]:
+                        later.cancel()
+
+        async with anyio.create_task_group() as group:
+            for index, (server, tail, session) in enumerate(started):
+                group.start_soon(initialize, index, server, tail, session)
+        if failures:
+            raise failures[min(failures)]
+        yield [Connection(session, names[i]) for i, (_, _, session) in enumerate(started)]
 
 
 def _leaf(error: BaseException) -> BaseException:

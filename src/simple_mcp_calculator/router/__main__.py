@@ -10,13 +10,12 @@ offers it.
 on bad usage or when a server reports an error, 130 on Ctrl+C and 143 on SIGTERM.
 """
 
-import math
 import sys
 from collections.abc import Sequence
 from typing import TextIO
 
 from simple_mcp_calculator.common.javafmt import java_double_str
-from simple_mcp_calculator.common.javaparse import java_parse_double
+from simple_mcp_calculator.common.javaparse import is_finite_java_double, java_parse_double
 from simple_mcp_calculator.common.mcp_call import (
     Arguments,
     ServerCommand,
@@ -31,15 +30,6 @@ SERVERS = (
     ("calculator", "simple_mcp_calculator.calculator_server"),
     ("scientific", "simple_mcp_calculator.scientific_server"),
 )
-
-
-def is_finite_number(text: str) -> bool:
-    """NaN and Infinity parse as doubles but can't be sent as JSON numbers, so they are
-    rejected here."""
-    try:
-        return math.isfinite(java_parse_double(text))
-    except ValueError:
-        return False
 
 
 def print_operations(router: CalculatorRouter, out: TextIO) -> None:
@@ -81,7 +71,7 @@ async def run(argv: Sequence[str]) -> int:
             await _demo(router)
             return 0
         operation, *operands = args.positional
-        if not all(is_finite_number(o) for o in operands):
+        if not all(is_finite_java_double(o) for o in operands):
             emit(USAGE, sys.stderr)
             print_operations(router, sys.stderr)
             return 1

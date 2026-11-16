@@ -7,7 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from simple_mcp_calculator.common.javaparse import is_java_double, java_parse_double
+from simple_mcp_calculator.common.javaparse import (
+    is_finite_java_double,
+    is_java_double,
+    java_parse_double,
+)
 
 FIXTURE = Path(__file__).parent / "data" / "java_parse.txt"
 
@@ -38,3 +42,19 @@ def test_matches_double_parse_double(text: str, java: str) -> None:
     else:
         assert _bits(value) == java
     assert is_java_double(text)
+
+
+@pytest.mark.parametrize(
+    ("text", "finite"),
+    [
+        ("2.5", True),
+        ("0x1p3", True),
+        ("NaN", False),
+        ("-Infinity", False),
+        ("0x1p2000", False),
+        ("abc", False),
+        ("1_000", False),
+    ],
+)
+def test_is_finite_java_double(text: str, finite: bool) -> None:
+    assert is_finite_java_double(text) is finite
